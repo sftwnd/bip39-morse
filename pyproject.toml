@@ -18,6 +18,7 @@ test = [
     "pytest>=7.0",
     "pytest-cov",
     "mnemonic",
+    "hypothesis>=6.0",
 ]
 
 [project.scripts]
