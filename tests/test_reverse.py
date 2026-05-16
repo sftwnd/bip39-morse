@@ -1,5 +1,5 @@
 import pytest
-from bip39_morse.reverse import WordEntry
+from bip39_morse.reverse import WordEntry, format_grouped
 from bip39_morse.morse import bits_to_text, char_to_bits
 from bip39_morse.bip39 import load_wordlist
 
@@ -252,3 +252,63 @@ def test_reverse_russian_uses_cyrillic_decoding(wl_ru):
     # All decoded chars should be Cyrillic letters, digits or punctuation
     for c in text:
         assert c.isalpha() and ord(c) > 127 or c in '0123456789.,-!?:'
+
+
+# --- format_grouped --------------------------------------------------------
+
+def test_format_grouped_default_five():
+    assert format_grouped('ABCDEFGHIJ') == 'ABCDE FGHIJ'
+
+
+def test_format_grouped_custom_size():
+    assert format_grouped('ABCDEFGHIJ', group_size=4) == 'ABCD EFGH IJ'
+
+
+def test_format_grouped_trailing_partial():
+    assert format_grouped('ABCDEFG', group_size=5) == 'ABCDE FG'
+
+
+def test_format_grouped_short_text():
+    assert format_grouped('ABC', group_size=5) == 'ABC'
+
+
+def test_format_grouped_empty():
+    assert format_grouped('') == ''
+
+
+def test_format_grouped_group_size_one():
+    assert format_grouped('ABCD', group_size=1) == 'A B C D'
+
+
+def test_format_grouped_per_line():
+    text = 'ABCDEFGHIJKLMNOPQRSTUVWX'  # 24 chars
+    # group_size=4, per_line=3 → 6 groups, 2 lines of 3 groups
+    out = format_grouped(text, group_size=4, per_line=3)
+    assert out == 'ABCD EFGH IJKL\nMNOP QRST UVWX'
+
+
+def test_format_grouped_per_line_uneven():
+    text = 'ABCDEFGHIJKLMNOP'  # 16 chars
+    # group_size=5: 'ABCDE FGHIJ KLMNO P'; per_line=2 → split after 2 groups
+    out = format_grouped(text, group_size=5, per_line=2)
+    assert out == 'ABCDE FGHIJ\nKLMNO P'
+
+
+def test_format_grouped_per_line_one():
+    """per_line=1 puts each group on its own line."""
+    out = format_grouped('ABCDEFGHIJ', group_size=5, per_line=1)
+    assert out == 'ABCDE\nFGHIJ'
+
+
+def test_format_grouped_invalid_group_size():
+    with pytest.raises(ValueError, match='group_size'):
+        format_grouped('ABC', group_size=0)
+    with pytest.raises(ValueError, match='group_size'):
+        format_grouped('ABC', group_size=-1)
+
+
+def test_format_grouped_invalid_per_line():
+    with pytest.raises(ValueError, match='per_line'):
+        format_grouped('ABC', group_size=5, per_line=0)
+    with pytest.raises(ValueError, match='per_line'):
+        format_grouped('ABC', group_size=5, per_line=-1)
