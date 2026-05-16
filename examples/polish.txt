@@ -1,0 +1,34 @@
+# locale: en
+# name: Polish accent extensions (ą, ć, ę, ł, ń, ó, ś, ź, ż)
+#
+# Source: ITU-R M.1677-1.
+# Loaded under locale=en so the letters extend the built-in English
+# alphabet rather than creating a separate locale — the standard A-Z
+# codes are reused; this file only adds the nine extra characters.
+#
+# Note: most Polish accent codes are shared bit-strings with other
+# European accented letters defined in ITU-R M.1677-1:
+#   Ą ≡ Ä (.-.-)        Ć ≡ Ç (-.-..)
+#   Ę ≡ É (..-..)       Ł ≡ È (.-..-)
+#   Ń ≡ Ñ (--.--)       Ó ≡ Ö (---.)
+# In the forward direction this is harmless — Ą and Ä are distinct
+# characters and char_to_bits handles them independently. In the reverse
+# direction, when multiple layers define different characters with the
+# same bit string, the first character inserted into the merged en-letter
+# table wins (it's a property of _bits_table). If you load polish.txt
+# together with german/french/spanish, the file loaded *earliest* is
+# the one whose characters appear in reverse-mode output for shared
+# codes — reorder the --morse-table flags if you want a different
+# language to win.
+#
+# Format: <char> <whitespace> <morse>   ('.' = dit, '-' = dah)
+
+Ą .-.-
+Ć -.-..
+Ę ..-..
+Ł .-..-
+Ń --.--
+Ó ---.
+Ś ...-...
+Ź --..-.
+Ż --..-

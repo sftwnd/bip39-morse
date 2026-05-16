@@ -107,17 +107,18 @@ python -m bip39_morse --morse-table examples/japanese.txt --reverse --lang jp
 
 Then reverse-mode output will be rendered in katakana. (The same bit pattern `01` decodes as `A` for `--lang en`, `А` for `--lang ru`, and `イ` for `--lang jp` — `bits_to_text` only reads layers tagged with the requested locale.)
 
-#### Latin accent extensions (German / French / Spanish)
+#### Latin accent extensions (German / French / Spanish / Polish)
 
-Several Western-European languages don't need a separate alphabet — they just add a handful of accented letters on top of A–Z. The repository ships three ITU-R M.1677-1 extensions tagged with `locale: en`, so they **layer onto the built-in English alphabet** instead of creating a new locale:
+Several Western-European languages don't need a separate alphabet — they just add a handful of accented letters on top of A–Z. The repository ships four ITU-R M.1677-1 extensions tagged with `locale: en`, so they **layer onto the built-in English alphabet** instead of creating a new locale:
 
 | File | Adds |
 |------|------|
-| [`examples/german.txt`](examples/german.txt) | `Ä`, `Ö`, `Ü`, `ß` |
-| [`examples/french.txt`](examples/french.txt) | `À`, `Ç`, `É`, `È` |
+| [`examples/german.txt`](examples/german.txt)  | `Ä`, `Ö`, `Ü`, `ß` |
+| [`examples/french.txt`](examples/french.txt)  | `À`, `Ç`, `É`, `È` |
 | [`examples/spanish.txt`](examples/spanish.txt) | `Ñ`, `Ü` |
+| [`examples/polish.txt`](examples/polish.txt)   | `Ą`, `Ć`, `Ę`, `Ł`, `Ń`, `Ó`, `Ś`, `Ź`, `Ż` |
 
-You can load any combination — they don't conflict with each other (the few overlapping letters, e.g. `Ü` in both German and Spanish, share the same ITU code).
+You can load any combination — they don't conflict with each other (the few overlapping letters, e.g. `Ü` in both German and Spanish, share the same ITU code). Polish is a special case: six of its nine letters share a bit-string with another extension (`Ą`≡`Ä`, `Ć`≡`Ç`, `Ę`≡`É`, `Ł`≡`È`, `Ń`≡`Ñ`, `Ó`≡`Ö`). Forward direction is unaffected; in reverse direction the **first-loaded** file's character wins for any shared code, so reorder the `--morse-table` flags if you want a particular language to dominate the decoded output.
 
 ##### Example: French session
 
@@ -311,6 +312,7 @@ examples/
   german.txt      ITU-R M.1677-1 German accent extension (locale: en)
   french.txt      ITU-R M.1677-1 French accent extension (locale: en)
   spanish.txt     ITU-R M.1677-1 Spanish accent extension (locale: en)
+  polish.txt      ITU-R M.1677-1 Polish accent extension (locale: en)
 docs/
   generate_demo.py        Full demo pipeline (forward + reverse, SVG + PNG, watermark)
   demo.cast               asciinema v2 source for the forward (iroha → mnemonic) demo

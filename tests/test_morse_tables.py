@@ -9,6 +9,7 @@ from bip39_morse import morse
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 EXAMPLES_JP = REPO_ROOT / 'examples' / 'japanese.txt'
+EXAMPLES_PL = REPO_ROOT / 'examples' / 'polish.txt'
 
 
 @pytest.fixture(autouse=True)
@@ -158,3 +159,89 @@ def test_bits_to_text_raises_when_nothing_matches(tmp_path):
     morse.load_table_file(path)
     with pytest.raises(ValueError, match='No Morse match'):
         morse.bits_to_text('001', locale='xx')
+
+
+# --- examples/polish.txt --------------------------------------------------
+
+def test_load_polish_example_file():
+    """Loading polish.txt registers nine letters under the en layer."""
+    locale = morse.load_table_file(str(EXAMPLES_PL))
+    assert locale == 'en'
+    en = morse.locale_table('en')
+    # A few canonical Polish entries
+    assert en['ą'] == '.-.-'
+    assert en['ł'] == '.-..-'
+    assert en['ś'] == '...-...'
+    # Built-in A-Z still present in the merged en table
+    assert en['a'] == '.-'
+    assert en['z'] == '--..'
+
+
+@pytest.mark.parametrize('ch,code,bits', [
+    ('ą', '.-.-',    '0101'),
+    ('ć', '-.-..',   '10100'),
+    ('ę', '..-..',   '00100'),
+    ('ł', '.-..-',   '01001'),
+    ('ń', '--.--',   '11011'),
+    ('ó', '---.',    '1110'),
+    ('ś', '...-...', '0001000'),
+    ('ź', '--..-.',  '110010'),
+    ('ż', '--..-',   '11001'),
+])
+def test_polish_letter_codes_match_itu(ch, code, bits):
+    """Every Polish character in polish.txt maps to the ITU-R M.1677-1
+    code and char_to_bits produces the expected bit string."""
+    morse.load_table_file(str(EXAMPLES_PL))
+    assert morse.locale_table('en')[ch] == code
+    assert morse.char_to_bits(ch) == bits
+    assert morse.char_to_bits(ch.upper()) == bits  # case-insensitive
+
+
+def test_polish_roundtrip_forward_reverse_forward():
+    """Round-trip required by the issue DoD: a phrase whose entropy is
+    derived from Polish characters must produce the same entropy hex when
+    fed back through forward mode after reverse decoding."""
+    morse.load_table_file(str(EXAMPLES_PL))
+    phrase_in = 'ĄĆĘŁŃÓŚŹŻ' * 4  # 9 chars × 4 = 36 chars, 46×4=184 bits worth
+    bits = ''.join(morse.char_to_bits(c) for c in phrase_in)
+    assert len(bits) >= 128
+    entropy = bits[:128]
+    text = morse.bits_to_text(entropy, locale='en')
+    re_bits = ''.join(morse.char_to_bits(c) for c in text)
+    assert re_bits[:128] == entropy
+
+
+def test_polish_shared_codes_match_other_locales():
+    """Six of nine Polish letters share a bit-string with an existing
+    extension (Ą≡Ä, Ć≡Ç, Ę≡É, Ł≡È, Ń≡Ñ, Ó≡Ö). Verify that the codes
+    documented in polish.txt are consistent with the codes in
+    german/french/spanish.txt."""
+    morse.load_table_file(str(REPO_ROOT / 'examples' / 'german.txt'))
+    morse.load_table_file(str(REPO_ROOT / 'examples' / 'french.txt'))
+    morse.load_table_file(str(REPO_ROOT / 'examples' / 'spanish.txt'))
+    morse.load_table_file(str(EXAMPLES_PL))
+    en = morse.locale_table('en')
+    pairs = [('ą', 'ä'), ('ć', 'ç'), ('ę', 'é'), ('ł', 'è'),
+             ('ń', 'ñ'), ('ó', 'ö')]
+    for pl, other in pairs:
+        assert en[pl] == en[other], f'{pl!r} and {other!r} must share the same code'
+
+
+def test_polish_layer_order_decides_reverse_winner(tmp_path):
+    """When polish.txt is loaded BEFORE german.txt, bits 0101 must decode
+    to Ą (Polish first); the reverse load order makes it Ä. This locks in
+    the documented behaviour referenced in the polish.txt header comment."""
+    # Polish first, then German.
+    morse.load_table_file(str(EXAMPLES_PL))
+    morse.load_table_file(str(REPO_ROOT / 'examples' / 'german.txt'))
+    # 0101 alone — the algorithm picks longest letter at usage 0; both Ą
+    # and Ä have length-4 code so it's purely an insertion-order tie-break.
+    out_first_pl = morse.bits_to_text('0101', locale='en')
+    assert out_first_pl == 'Ą'
+
+    # Reset and reverse the load order.
+    morse.reset_tables()
+    morse.load_table_file(str(REPO_ROOT / 'examples' / 'german.txt'))
+    morse.load_table_file(str(EXAMPLES_PL))
+    out_first_de = morse.bits_to_text('0101', locale='en')
+    assert out_first_de == 'Ä'
