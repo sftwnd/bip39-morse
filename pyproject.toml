@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bip39-morse"
+version = "1.0.0"
+description = "Interactive TUI that converts a Morse-typed phrase into a BIP39 mnemonic (and back), with pluggable per-locale Morse alphabets"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = [
+    "prompt_toolkit>=3.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-cov",
+    "mnemonic",
+]
+
+[project.scripts]
+bip39-morse = "bip39_morse.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bip39_morse*"]
+
+[tool.setuptools.package-data]
+"bip39_morse.wordlists" = ["*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=bip39_morse --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["bip39_morse"]
+omit = [
+    "bip39_morse/__main__.py",
+    "bip39_morse/cli.py",
+    "bip39_morse/tui.py",
+    "bip39_morse/tui_reverse.py",
+    "bip39_morse/wordlists/*",
+]
+
+[tool.coverage.report]
+fail_under = 85

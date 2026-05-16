@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 876 252" width="876" height="252" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Menlo, monospace" font-size="14">
+<rect width="100%" height="100%" fill="#272822"/>
+<text x="18" y="38" xml:space="preserve"><tspan fill="#a6e22e">$ bip39-morse --morse-table examples/japanese.txt --length 12 --ascii</tspan></text>
+<text x="18" y="58" xml:space="preserve"><tspan fill="#66d9ef">Слов: 12 (128 бит энтропии)</tspan></text>
+<text x="18" y="78" xml:space="preserve"><tspan fill="#a6e22e">● </tspan><tspan fill="#f8f8f2">562A 0858 2CF5 3BF3 6A12 9340 B9BC FBAF │ 1110</tspan></text>
+<text x="18" y="98" xml:space="preserve"><tspan fill="#75715e">   ########################################  132/128</tspan></text>
+<text x="18" y="118" xml:space="preserve"><tspan fill="#f8f8f2">›  イロハニホヘトチリヌルヲワカヨタレソツネナラムウヰノオクヤマケフコエテアサキユメミシヱヒモセス</tspan></text>
+<text x="18" y="138" xml:space="preserve"><tspan fill="#f8f8f2">イロハニホヘトチリヌルヲワカヨタレソツネナラムウヰノオクヤマケフコエテアサキユメミシヱヒモセス</tspan></text>
+<text x="18" y="158" xml:space="preserve"><tspan fill="#e6db74">file expect bid fly father whale portion fame doll social discover garlic</tspan></text>
+<text x="18" y="198" xml:space="preserve"><tspan fill="#a6e22e">$</tspan></text>
+<rect x="0" y="220" width="876" height="32" fill="#f92672" fill-opacity="0.18"/>
+<text x="438" y="238" fill="#f92672" font-weight="bold" text-anchor="middle">DEMO PHRASE — DO NOT USE FOR REAL FUNDS</text>
+</svg>

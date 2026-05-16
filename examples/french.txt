@@ -1,0 +1,19 @@
+# locale: en
+# name: French accent extensions (à, ç, é, è)
+#
+# Source: ITU-R M.1677-1.
+# Loaded under locale=en so the letters extend the built-in English
+# alphabet rather than creating a separate locale — the standard A-Z
+# codes are reused; this file only adds the four extra characters.
+#
+# Note: ITU-R M.1677-1 defines codes only for À, Ç, É, È. The other
+# French accents (Â, Ê, Î, Ô, Û, Ï, Ë, Ù) have no standard Morse
+# code — operators traditionally drop the diacritic and transmit the
+# base letter. Add them here if your convention says otherwise.
+#
+# Format: <char> <whitespace> <morse>   ('.' = dit, '-' = dah)
+
+À .--.-
+Ç -.-..
+É ..-..
+È .-..-

@@ -1,0 +1,66 @@
+# locale: jp
+# name: Japanese Wabun code (katakana)
+#
+# Source: ITU-R M.1677-1 / JARL standard. Verify against an authoritative
+# reference before relying on this table in production — Wabun has minor
+# regional variants.
+#
+# Format: <char> <whitespace> <morse>   ('.' = dit, '-' = dah)
+#
+# Note: dakuten (゛), handakuten (゜) and the long-vowel mark (ー) are
+# appended to a preceding kana to form voiced/semi-voiced/long sounds.
+# Example: ガ = カ + ゛ → ".-.." + ".."  (the bit stream concatenates them).
+
+イ .-
+ロ .-.-
+ハ -...
+ニ -.-.
+ホ -..
+ヘ .
+ト ..-..
+チ ..-.
+リ --.
+ヌ ....
+ル -.--.
+ヲ .---
+ワ -.-
+カ .-..
+ヨ --
+タ -.
+レ ---
+ソ ---.
+ツ .--.
+ネ --.-
+ナ .-.
+ラ ...
+ム -
+ウ ..-
+ヰ .-..-
+ノ ..--
+オ .-...
+ク ...-
+ヤ .--
+マ -..-
+ケ -.--
+フ --..
+コ ----
+エ -.---
+テ .-.--
+ア --.--
+サ -.-.-
+キ -.-..
+ユ -..--
+メ -...-
+ミ ..-.-
+シ --.-.
+ヱ .--..
+ヒ --..-
+モ -..-.
+セ .---.
+ス ---.-
+ン .-.-.
+
+# Voiced / semi-voiced / long-vowel marks
+゛ ..
+゜ ..--.
+ー .--.-
