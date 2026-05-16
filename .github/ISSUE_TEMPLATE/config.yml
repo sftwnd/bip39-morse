@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or discussion
+    url: https://github.com/sftwnd/bip39-morse/discussions
+    about: For usage questions, ideas not yet shaped into a feature request, or general discussion. Please use Discussions, not Issues.
+  - name: Security vulnerability
+    url: https://github.com/sftwnd/bip39-morse/blob/master/SECURITY.md
+    about: Do not file security vulnerabilities as public issues. See SECURITY.md for the private reporting channel.

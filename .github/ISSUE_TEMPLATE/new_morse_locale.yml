@@ -1,0 +1,105 @@
+name: New Morse locale
+description: Propose a new Morse alphabet (or accent extension) for inclusion under examples/.
+title: "[locale] "
+labels: ["locale", "good first issue"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Adding a Morse alphabet is the most natural contribution to
+        this project — the tool is built around a pluggable per-locale
+        registry. Thanks for proposing one.
+
+        **Two flavours of locale file:**
+        - **New alphabet** (e.g. Greek, Arabic, Hebrew, Korean): a
+          standalone file with its own `# locale: <code>` header.
+          Activated by `--lang <code>` in reverse mode.
+        - **Accent extension** over an existing alphabet (e.g. Polish,
+          Czech, Portuguese over Latin): use the base locale's code
+          (`# locale: en` for Latin extensions, `# locale: ru` for
+          Cyrillic extensions). The new characters layer onto the
+          built-in table; no `--lang` change needed.
+
+        See `examples/japanese.txt` (new alphabet) vs `examples/german.txt`
+        (accent extension) for reference.
+  - type: input
+    id: locale_code
+    attributes:
+      label: Locale code
+      description: Short code that goes into the `# locale:` header. For accent extensions, use the base locale's code (`en` / `ru`).
+      placeholder: "el (Greek) | en (for a Latin accent extension)"
+    validations:
+      required: true
+  - type: input
+    id: language
+    attributes:
+      label: Language / alphabet name
+      placeholder: "Greek | Polish accent extension"
+    validations:
+      required: true
+  - type: textarea
+    id: standard
+    attributes:
+      label: Reference standard
+      description: |
+        Which standard defines the Morse codes you are proposing?
+        Cite the document (e.g. ITU-R M.1677-1, JARL Wabun, national
+        amateur radio standard) and the section/table.
+      placeholder: "ITU-R M.1677-1 section 1.1.4, table 'Greek alphabet'"
+    validations:
+      required: true
+  - type: textarea
+    id: table
+    attributes:
+      label: Proposed table
+      description: |
+        Paste the file contents in the same format as existing examples.
+        One character per line: `<char> <whitespace> <morse>` where
+        `morse` uses `.` and `-`. Include the `# locale:` header and a
+        `# source:` comment citing the standard.
+      render: text
+      placeholder: |
+        # locale: el
+        # source: ITU-R M.1677-1, Greek alphabet
+        Α .-
+        Β -...
+        ...
+    validations:
+      required: true
+  - type: textarea
+    id: collisions
+    attributes:
+      label: Collisions with existing tables
+      description: |
+        Does any character in your table collide with a character already
+        defined in the built-in `en` / `ru` tables or in another shipped
+        example file? If yes, list the collisions and explain whether
+        the codes agree.
+      placeholder: "No collisions. / Ü collides with german.txt; both use ..-- (matches)."
+    validations:
+      required: true
+  - type: textarea
+    id: one_bit
+    attributes:
+      label: 1-bit coverage
+      description: |
+        The reverse decoder is guaranteed to terminate because the
+        built-in `en`/`ru` layers cover both `0` and `1` at length 1.
+        If you are submitting a **new alphabet** (not a layer over `en`
+        or `ru`), does it provide 1-bit codes for both `0` and `1`? If
+        not, describe how the fallback chain (letters → digits →
+        punctuation) covers them.
+      placeholder: "Layer over en — built-in e/t cover 0/1. (Or: New alphabet, no 1-bit codes; falls back to digits — round-trip test attached.)"
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have cited an authoritative standard for every code in the table.
+          required: true
+        - label: I have run `pytest` locally and can add a round-trip test for the new locale.
+          required: true
+        - label: I am willing to open the PR myself, or I am OK with the table being adopted by a maintainer with credit.
+          required: false
