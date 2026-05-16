@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `examples/polish.txt` — ITU-R M.1677-1 Polish accent extension under
+  `locale: en` (Ą, Ć, Ę, Ł, Ń, Ó, Ś, Ź, Ż). Layers onto the built-in
+  English alphabet exactly like the existing German / French / Spanish
+  extensions. Six of nine characters share their bit-string with letters
+  in the other shipped extensions; the load-order rule that decides who
+  "wins" in reverse mode is documented in the file header and the README.
+  Closes #5.
+
 ### CI
 - Bump `actions/checkout` v4 → v6 and `actions/setup-python` v5 → v6 in
   `.github/workflows/tests.yml`. Both v6 majors run on Node.js 24,
