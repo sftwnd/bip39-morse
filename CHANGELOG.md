@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+- `CONTRIBUTING.ru.md` — full Russian translation of `CONTRIBUTING.md`,
+  matching the bilingual treatment already used for the README. Both
+  files now cross-link to each other at the top, mirroring the README
+  pattern. The English `CONTRIBUTING.md` was also brought up to date —
+  the *Adding a Morse locale* table now lists the Greek (`el`) and
+  Polish entries that have shipped since the file was first written.
+  Closes #9.
+
 ### Fixed
 - **Safety: ß / SS round-trip mismatch in reverse mode.** Python's
   `str.upper()` maps lowercase `ß` to the two-character string `'SS'`,
