@@ -32,8 +32,11 @@ If this project brought you value, consider sending the equivalent of **a double
 |---|---|---|
 | ₿ Bitcoin | BTC | `bc1qzurau9efv2s8j3syk4963hfxax0hzpn9dqjh4c` |
 | 🔷 Ethereum | USDT (ERC-20) | `0x34D442d2136677970061E997A07242d3921eb6df` |
+| 🔷 Ethereum | USDC (ERC-20) | `0x34D442d2136677970061E997A07242d3921eb6df` |
 | 🟢 TRON | USDT (TRC-20) | `TXTTEu5dN9FRRPgxh4AHVpFEQbCccsT5PA` |
+| 🟢 TRON | USDC (TRC-20) | `TXTTEu5dN9FRRPgxh4AHVpFEQbCccsT5PA` |
 | 🟡 BNB Chain | USDT (BEP-20) | `0x34D442d2136677970061E997A07242d3921eb6df` |
+| 🟡 BNB Chain | USDC (BEP-20) | `0x34D442d2136677970061E997A07242d3921eb6df` |
 | 🔴 TRON | TRX | `TXTTEu5dN9FRRPgxh4AHVpFEQbCccsT5PA` |
 
 ---
@@ -74,6 +77,32 @@ If this project brought you value, consider sending the equivalent of **a double
     <td align="center"><sub>🔷 Ethereum</sub></td>
     <td align="center"><sub>🟡 BNB Chain</sub></td>
     <td align="center"><sub>🔴 TRON Native</sub></td>
+  </tr>
+  <tr>
+    <td align="center"></td>
+    <td align="center">
+      <a href="https://tronscan.org/#/address/YOUR_TRC20_WALLET_ADDRESS">
+        <img src="https://img.shields.io/badge/USDC-TRC--20-2775CA?style=for-the-badge&logo=usdcoin&logoColor=white" alt="USDC TRC-20"/>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://etherscan.io/address/YOUR_ETH_WALLET_ADDRESS">
+        <img src="https://img.shields.io/badge/USDC-ERC--20-2775CA?style=for-the-badge&logo=usdcoin&logoColor=white" alt="USDC ERC-20"/>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://bscscan.com/address/YOUR_BEP20_WALLET_ADDRESS">
+        <img src="https://img.shields.io/badge/USDC-BEP--20-2775CA?style=for-the-badge&logo=usdcoin&logoColor=white" alt="USDC BEP-20"/>
+      </a>
+    </td>
+    <td align="center"></td>
+  </tr>
+  <tr>
+    <td align="center"></td>
+    <td align="center"><sub>🟢 TRON USDC</sub></td>
+    <td align="center"><sub>🔷 Ethereum USDC</sub></td>
+    <td align="center"><sub>🟡 BNB Chain USDC</sub></td>
+    <td align="center"></td>
   </tr>
 </table>
 
