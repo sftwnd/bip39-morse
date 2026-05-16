@@ -4,6 +4,33 @@
 
 Interactive TUI that converts a Morse-typed phrase into a BIP39 mnemonic (and back), with pluggable per-locale Morse alphabets.
 
+## Demo
+
+> [!CAUTION]
+> The phrase below is the **iroha** — a classical Heian-era pangram of the kana, globally known public text. The wallet derived from it is therefore public too: anyone running the same command produces the same mnemonic. This is illustration, **not** a usage recipe.
+
+<img src="docs/demo.svg" alt="Animated terminal demo: forward-mode generation of a 12-word BIP39 mnemonic from the iroha typed as Morse entropy">
+
+*If the SVG above does not animate in your viewer, the final frame as PNG:*
+
+<img src="docs/demo-final.png" alt="Final state: shell prompt, iroha echoed, BIP39 mnemonic">
+
+The [iroha](https://en.wikipedia.org/wiki/Iroha) (色は匂へど…) is a 9th–10th c. Buddhist meditation on impermanence. Its 47 syllables use **each kana exactly once**, making it simultaneously a famous poem *and* a pangram of the syllabary. Approximate translation:
+
+> *Beautiful colours fade away — who in this world endures forever?*
+> *Today I cross the deep mountain of impermanence, and shall not dream shallow dreams, nor be intoxicated.*
+
+The demo feeds the iroha kana-by-kana through the Japanese Wabun alphabet (loaded from `examples/japanese.txt`). The 47 kana produce **186 bits**, well past the 132 bits needed for a 12-word seed — the indicator turns green on the 36th kana when `entropy_bits=128` is reached, the rest is overflow that goes only into the visual buffer.
+
+Reproduce locally:
+
+```bash
+bip39-morse --morse-table examples/japanese.txt --length 12 --ascii
+# then type the iroha and press Enter
+```
+
+The full demo pipeline is in [`docs/generate_demo.py`](docs/generate_demo.py) — `python3 docs/generate_demo.py` regenerates `demo.cast` → `demo.svg` (via `termtosvg`) → injects the watermark, and `demo-final.svg` → `demo-final.png` (via `rsvg-convert`). To rebuild from scratch: `pip install termtosvg` and `brew install librsvg`.
+
 ## Security warning — read this before generating anything real
 
 Generating a real BIP39 phrase on a general-purpose computer is **inherently risky** and is done entirely at your own risk. Only proceed on a machine you are completely certain is **not** under an attacker's control — and even then, treat the result as compromised the moment anything unexpected happens during the session.
@@ -272,6 +299,12 @@ examples/
   german.txt      ITU-R M.1677-1 German accent extension (locale: en)
   french.txt      ITU-R M.1677-1 French accent extension (locale: en)
   spanish.txt     ITU-R M.1677-1 Spanish accent extension (locale: en)
+docs/
+  generate_demo.py  Full demo pipeline (cast + SVG + PNG with watermark)
+  demo.cast         asciinema v2 source for the iroha demo
+  demo.svg          animated SVG embedded in the README
+  demo-final.svg    static SVG source for the PNG fallback
+  demo-final.png    static PNG of the final terminal state
 tests/
   test_morse.py
   test_morse_tables.py
