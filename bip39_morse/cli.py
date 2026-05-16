@@ -3,8 +3,16 @@ import sys
 
 from . import morse
 from .bip39 import load_wordlist
+from .reverse import format_grouped
 from .tui import run_tui
 from .tui_reverse import run_reverse_tui
+
+
+def _positive_int(value: str) -> int:
+    iv = int(value)
+    if iv < 1:
+        raise argparse.ArgumentTypeError(f'must be >= 1, got {iv}')
+    return iv
 
 LENGTH_MAP = {
     12: 128,
@@ -54,6 +62,22 @@ def main():
              'file; otherwise auto-detected from --wordlist (russian → ru, else en).',
     )
     parser.add_argument(
+        '--group-size',
+        type=_positive_int,
+        default=5,
+        metavar='N',
+        help='For --reverse output: split the printed Morse text into '
+             'space-separated groups of N characters. Default: 5.',
+    )
+    parser.add_argument(
+        '--per-line',
+        type=_positive_int,
+        default=None,
+        metavar='N',
+        help='For --reverse output: insert a newline after every N groups. '
+             'If omitted, all groups are printed on a single line.',
+    )
+    parser.add_argument(
         '--ascii',
         action='store_true',
         help='Use ANSI-colored ASCII bullet instead of emoji indicators',
@@ -98,7 +122,7 @@ def main():
             use_ascii=args.ascii,
         )
         if text is not None:
-            print(text)
+            print(format_grouped(text, group_size=args.group_size, per_line=args.per_line))
         return
 
     result = run_tui(entropy_bits=entropy_bits, wordlist=wordlist, use_ascii=args.ascii)

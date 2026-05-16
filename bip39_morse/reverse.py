@@ -142,3 +142,20 @@ class WordEntry:
         Returns whatever is accumulated so far if shorter than entropy_bits."""
         b = self.bits()
         return b[:entropy_bits]
+
+
+def format_grouped(text: str, group_size: int = 5, per_line: int | None = None) -> str:
+    """Split `text` into space-separated groups of `group_size` characters.
+    If `per_line` is set, insert a newline after every that many groups.
+    The trailing group/line may be shorter."""
+    if group_size < 1:
+        raise ValueError(f'group_size must be >= 1, got {group_size}')
+    if per_line is not None and per_line < 1:
+        raise ValueError(f'per_line must be >= 1, got {per_line}')
+    if not text:
+        return ''
+    groups = [text[i:i + group_size] for i in range(0, len(text), group_size)]
+    if per_line is None:
+        return ' '.join(groups)
+    lines = [' '.join(groups[i:i + per_line]) for i in range(0, len(groups), per_line)]
+    return '\n'.join(lines)

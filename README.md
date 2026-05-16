@@ -161,7 +161,7 @@ pip install -e ".[test]"
 ## Usage
 
 ```bash
-python -m bip39_morse [--length {12|18|24}] [--wordlist english|russian|<path>] [--reverse] [--morse-table PATH ...] [--lang LOCALE] [--ascii]
+python -m bip39_morse [--length {12|18|24}] [--wordlist english|russian|<path>] [--reverse] [--morse-table PATH ...] [--lang LOCALE] [--group-size N] [--per-line N] [--ascii]
 ```
 
 Or via the installed entry point:
@@ -179,6 +179,8 @@ bip39-morse --length 12
 | `--reverse` | Reverse mode: type BIP39 words with autocompletion, render the resulting Morse-decoded text. |
 | `--morse-table PATH` | Load an extra Morse alphabet from a file (see [Custom Morse tables](#custom-morse-tables)). Repeatable; later files override earlier ones (and the built-in tables) for any character defined more than once. |
 | `--lang LOCALE` | Output Morse alphabet for `--reverse` (locale code: `en`, `ru`, or any locale registered via `--morse-table`, e.g. `jp`). Default: the locale of the last loaded `--morse-table` file if any; otherwise auto-detected from `--wordlist` (russian → ru, else en). |
+| `--group-size N` | For `--reverse` output: split the printed Morse text into space-separated groups of `N` characters. Default: `5`. |
+| `--per-line N` | For `--reverse` output: insert a newline after every `N` groups. If omitted, all groups are printed on a single line. |
 | `--ascii` | Use ANSI-colored `●` instead of emoji indicators (for terminals without UTF-8 emoji support). |
 
 ## Forward mode (default)
@@ -222,6 +224,19 @@ Type BIP39 words (with prefix-autocomplete) → indices → bits → Morse-decod
 - A hex dump of the accumulated bits is shown live, identical in style to forward mode (`entropy_hex │ checksum_bits` once all words are entered).
 - The decoded Morse text is displayed live above the input.
 - After the last word, the indicator turns green; press `Enter` to print the text.
+
+Output formatting: the decoded Morse text printed after `Enter` is split into space-separated groups of `--group-size` characters (default `5`). If `--per-line N` is given, a newline is inserted after every `N` groups so the output lays out as a block — useful when you need to memorise or write down a long reverse-trash string and `man -k chunking` instinct kicks in:
+
+```
+$ bip39-morse --reverse --length 24 --group-size 4 --per-line 5
+... (enter mnemonic) ...
+ХФЬД НЯЙБ ТЮЖУ ЛЧПЗ БВЬИ
+ЦГСЫ РАЕД НПКЯ ХВЖЛ МЭЦК
+СЩФЩ УРЙЮ АИЪТ ЕФБГ ЬЗДЦ
+ПЖКУ ВЯЙЛ ЫРСМ АИНТ ЕЯН
+```
+
+Without `--per-line` (default) the same text is printed on a single line as `ХФЬДН ЯЙБТЮ ЖУЛЧП ЗБВЬИ ЦГСЫР АЕДНП …`. The TUI itself always shows the live preview on one line — these flags only shape the final printed text.
 
 Morse alphabet selection: explicit `--lang <locale>` takes precedence. If omitted, the default is the locale of the **last** loaded `--morse-table` file (so `--morse-table examples/japanese.txt` without `--lang` renders in katakana); if no extra tables were loaded, it falls back to auto-detection from `--wordlist` (russian ⇒ Cyrillic, else Latin). This lets you mix — e.g. enter a Russian mnemonic and render the Morse text in Latin alphabet, or in any custom locale you have loaded.
 
