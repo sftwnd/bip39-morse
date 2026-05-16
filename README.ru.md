@@ -105,7 +105,15 @@ bip39-morse --morse-table examples/japanese.txt --length 12 --ascii
 python -m bip39_morse --morse-table examples/japanese.txt --reverse --lang jp
 ```
 
-После этого reverse-режим будет рендерить вывод катаканой. (Тот же битовый паттерн `01` декодируется в `A` при `--lang en`, в `А` при `--lang ru` и в `イ` при `--lang jp` — `bits_to_text` читает только слои, помеченные запрошенной локалью.)
+После этого reverse-режим будет рендерить вывод катаканой. (Тот же битовый паттерн `01` декодируется в `A` при `--lang en`, в `А` при `--lang ru`, в `イ` при `--lang jp` и в `Α` при `--lang el` — `bits_to_text` читает только слои, помеченные запрошенной локалью.)
+
+Второй пример нового алфавита: [`examples/greek.txt`](examples/greek.txt) — греческий алфавит из 24 букв (Α–Ω) по ITU-R M.1677-1, раздел 1.1.4. Как и японский, это **самостоятельная локаль** (`# locale: el`), а не слой поверх латиницы. Загрузить:
+
+```bash
+python -m bip39_morse --morse-table examples/greek.txt --reverse --lang el
+```
+
+Греческий повторяет покрытие однобитовых кодов латиницы: `Ε` (`.`) и `Τ` (`-`) дают коды `0` и `1` длины 1, поэтому reverse-декодирование в `el` имеет тот же чисто-буквенный round-trip гарантию, что и встроенные `en`/`ru` — fallback на цифры/пунктуацию недостижим. В файле также есть финальная сигма `ς` как encode-only удобство, разделяющая код `σ` (`...`).
 
 #### Расширения латиницы (немецкое / французское / испанское / польское)
 
@@ -310,6 +318,7 @@ bip39_morse/
     russian.txt    2048-слов BIP39 Russian wordlist
 examples/
   japanese.txt    Пример Wabun (Japanese) Морзе-таблицы (locale: jp)
+  greek.txt       ITU-R M.1677-1 греческий алфавит (locale: el)
   german.txt      ITU-R M.1677-1 расширение для немецкого (locale: en)
   french.txt      ITU-R M.1677-1 расширение для французского (locale: en)
   spanish.txt     ITU-R M.1677-1 расширение для испанского (locale: en)

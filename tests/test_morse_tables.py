@@ -10,6 +10,7 @@ from bip39_morse import morse
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 EXAMPLES_JP = REPO_ROOT / 'examples' / 'japanese.txt'
 EXAMPLES_PL = REPO_ROOT / 'examples' / 'polish.txt'
+EXAMPLES_EL = REPO_ROOT / 'examples' / 'greek.txt'
 
 
 @pytest.fixture(autouse=True)
@@ -245,3 +246,111 @@ def test_polish_layer_order_decides_reverse_winner(tmp_path):
     morse.load_table_file(str(EXAMPLES_PL))
     out_first_de = morse.bits_to_text('0101', locale='en')
     assert out_first_de == 'Ä'
+
+
+# --- examples/greek.txt ---------------------------------------------------
+
+def test_load_greek_example_file():
+    """Loading greek.txt registers a new locale 'el' with 24+1 letters."""
+    locale = morse.load_table_file(str(EXAMPLES_EL))
+    assert locale == 'el'
+    assert 'el' in morse.list_locales()
+    assert morse.last_loaded_locale() == 'el'
+    el = morse.locale_table('el')
+    # 24 ITU letters + final sigma
+    assert len(el) == 25
+    # A few canonical Greek entries
+    assert el['α'] == '.-'
+    assert el['ε'] == '.'
+    assert el['τ'] == '-'
+    assert el['ω'] == '.--'
+
+
+@pytest.mark.parametrize('ch,code,bits', [
+    ('α', '.-',    '01'),
+    ('β', '-...',  '1000'),
+    ('γ', '--.',   '110'),
+    ('δ', '-..',   '100'),
+    ('ε', '.',     '0'),
+    ('ζ', '--..',  '1100'),
+    ('η', '....',  '0000'),
+    ('θ', '-.-.',  '1010'),
+    ('ι', '..',    '00'),
+    ('κ', '-.-',   '101'),
+    ('λ', '.-..',  '0100'),
+    ('μ', '--',    '11'),
+    ('ν', '-.',    '10'),
+    ('ξ', '-..-',  '1001'),
+    ('ο', '---',   '111'),
+    ('π', '.--.',  '0110'),
+    ('ρ', '.-.',   '010'),
+    ('σ', '...',   '000'),
+    ('τ', '-',     '1'),
+    ('υ', '-.--',  '1011'),
+    ('φ', '..-.',  '0010'),
+    ('χ', '----',  '1111'),
+    ('ψ', '--.-',  '1101'),
+    ('ω', '.--',   '011'),
+])
+def test_greek_letter_codes_match_itu(ch, code, bits):
+    """Every ITU-R M.1677-1 Greek letter maps to the documented code and
+    bit string, and lookup is case-insensitive via Python's str.lower
+    (which handles Greek correctly)."""
+    morse.load_table_file(str(EXAMPLES_EL))
+    assert morse.locale_table('el')[ch] == code
+    assert morse.char_to_bits(ch) == bits
+    assert morse.char_to_bits(ch.upper()) == bits
+
+
+def test_greek_one_bit_coverage():
+    """Issue #6 DoD: verify both '0' and '1' resolve to a letter at
+    length 1 in the el locale. Greek's Ε ('.') and Τ ('-') cover this,
+    so reverse decoding has the same letter-only guarantee as en/ru."""
+    morse.load_table_file(str(EXAMPLES_EL))
+    assert morse.bits_to_text('0', locale='el') == 'Ε'
+    assert morse.bits_to_text('1', locale='el') == 'Τ'
+
+
+def test_greek_final_sigma_encodes_like_sigma():
+    """ς and σ share the bit string '000'. In reverse direction σ wins
+    (medial sigma listed first in greek.txt, so it's inserted into the
+    bit-table first)."""
+    morse.load_table_file(str(EXAMPLES_EL))
+    assert morse.char_to_bits('σ') == '000'
+    assert morse.char_to_bits('ς') == '000'
+    # Reverse: '000' must decode to medial Σ (uppercase of σ), not final ς.
+    assert morse.bits_to_text('000', locale='el') == 'Σ'
+
+
+def test_greek_roundtrip_forward_reverse_forward():
+    """Round-trip required by the issue DoD: a 128-bit entropy derived
+    from a Greek phrase must survive forward → reverse → forward."""
+    morse.load_table_file(str(EXAMPLES_EL))
+    phrase = 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ' * 5  # 24 × 5 chars, well over 128 bits
+    bits = ''.join(morse.char_to_bits(c) for c in phrase)
+    assert len(bits) >= 128
+    entropy = bits[:128]
+    text = morse.bits_to_text(entropy, locale='el')
+    re_bits = ''.join(morse.char_to_bits(c) for c in text)
+    assert re_bits[:128] == entropy
+
+
+def test_same_bits_decode_per_locale_el_extends_pattern():
+    """Bits '01' is A in en, А in ru, イ in jp, Α in el — locale picks
+    the alphabet. Extends the existing test_same_bits_decode_differently_per_locale."""
+    morse.load_table_file(str(EXAMPLES_JP))
+    morse.load_table_file(str(EXAMPLES_EL))
+    assert morse.bits_to_text('01', locale='en') == 'A'
+    assert morse.bits_to_text('01', locale='ru') == 'А'
+    assert morse.bits_to_text('01', locale='jp') == 'イ'
+    assert morse.bits_to_text('01', locale='el') == 'Α'
+
+
+def test_greek_forward_accepts_chars_after_load():
+    """Before loading greek.txt, char_to_bits('α') must error; after, it
+    must produce the right bits. Mirrors test_forward_accepts_japanese_chars_after_load."""
+    with pytest.raises(ValueError):
+        morse.char_to_bits('α')
+    morse.load_table_file(str(EXAMPLES_EL))
+    assert morse.char_to_bits('α') == '01'
+    assert morse.char_to_bits('Ω') == '011'
