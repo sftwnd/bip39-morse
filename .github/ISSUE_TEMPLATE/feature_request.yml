@@ -1,0 +1,67 @@
+name: Feature request
+description: Suggest a new feature or an enhancement to an existing one.
+title: "[feat] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea. Before filing, please read the
+        **out-of-scope** list below — some categories are intentional
+        non-features and will be declined regardless of implementation
+        quality, because they would change the security posture of the
+        tool.
+
+        **Out of scope by design:**
+        - Network access of any kind at runtime.
+        - Writing entropy, the mnemonic, or any intermediate to disk.
+        - Clipboard writes of the mnemonic / entropy / phrase.
+        - Injection of additional randomness (the tool is fully
+          deterministic on user input — that is the whole point).
+        - Anything that increases the runtime dependency surface
+          beyond `prompt_toolkit` without a very strong reason.
+
+        Adding a **new Morse locale** is the most common kind of
+        enhancement — please use the *New Morse locale* template
+        instead of this one.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem does this solve? Who hits it, and how often?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: |
+        Describe the change at the level of CLI flags / API surface / UX.
+        If it touches the bit pipeline, sketch the data flow.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What else did you consider, and why is this the right shape?
+  - type: textarea
+    id: scope_impact
+    attributes:
+      label: Impact on the security posture
+      description: |
+        Does this change introduce any of: network calls, disk writes,
+        clipboard writes, new runtime dependencies, randomness injection,
+        changes to the round-trip invariant? If yes, justify.
+      placeholder: "No / Yes — because..."
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have read the out-of-scope list above and this proposal does not fall into it.
+          required: true
+        - label: I have searched existing issues and discussions for similar proposals.
+          required: true
