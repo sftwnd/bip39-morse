@@ -135,6 +135,19 @@ def test_commit_current_no_op_when_empty(wl_en):
     assert entry.commit_current() is False
 
 
+def test_commit_current_no_op_when_ready(wl_en):
+    entry = WordEntry(wordlist=wl_en, target_words=1)
+    for ch in 'aba':  # commits 'abandon', entry becomes ready
+        entry.push_char(ch)
+    assert entry.is_ready
+    assert entry.commit_current() is False
+
+
+def test_pop_no_op_on_fully_empty(wl_en):
+    entry = WordEntry(wordlist=wl_en, target_words=12)
+    assert entry.pop() is False
+
+
 def test_full_blocks_input(wl_en):
     entry = WordEntry(wordlist=wl_en, target_words=1)
     for ch in 'aba':

@@ -138,3 +138,23 @@ def test_last_loaded_locale_tracks_appends(tmp_path):
     path = _write(tmp_path, 'en2.txt', '# locale: en\na .-\n')
     morse.load_table_file(path)
     assert morse.last_loaded_locale() == 'en'
+
+
+def test_bits_to_text_falls_through_to_punctuation(tmp_path):
+    """A locale whose letter table has no short codes forces bits_to_text
+    to fall through letters → digits → punctuation. Bits '001100' is `?`
+    (punctuation, length 6); no letter matches and no 5-bit digit
+    prefix '00110' is in the digit table."""
+    path = _write(tmp_path, 'no_short.txt', '# locale: xx\nz -.--\n')
+    morse.load_table_file(path)
+    assert morse.bits_to_text('001100', locale='xx') == '?'
+
+
+def test_bits_to_text_raises_when_nothing_matches(tmp_path):
+    """If letter, digit, and punctuation tables all miss, bits_to_text
+    must raise ValueError. Three bits cannot match any code (letters need
+    at least 4 here, digits 5, punctuation 6)."""
+    path = _write(tmp_path, 'no_short.txt', '# locale: xx\nz -.--\n')
+    morse.load_table_file(path)
+    with pytest.raises(ValueError, match='No Morse match'):
+        morse.bits_to_text('001', locale='xx')

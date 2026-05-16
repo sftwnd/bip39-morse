@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Tests
+- Reach 100% line coverage of the core modules (`bip39`, `bitstream`,
+  `morse`, `reverse`). Adds defensive-guard tests for early-exit branches
+  in `BitStream.checksum_bits`/`entropy_hex_groups`/`indices` and
+  `WordEntry.commit_current`/`pop`, plus two tests that exercise the
+  `bits_to_text` letter → digit → punctuation fallback chain (and the
+  final `ValueError`) via a synthetic single-letter locale. Closes #10.
+
 ## [1.0.0] — 2026-05-16
 
 First public release.
