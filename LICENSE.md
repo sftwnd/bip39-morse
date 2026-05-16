@@ -46,63 +46,59 @@ If this project brought you value, consider sending the equivalent of **a double
 <table>
   <tr>
     <td align="center">
-      <a href="bitcoin:YOUR_BTC_WALLET_ADDRESS">
+      <a href="bitcoin:bc1qzurau9efv2s8j3syk4963hfxax0hzpn9dqjh4c">
         <img src="https://img.shields.io/badge/Bitcoin-BTC-F7931A?style=for-the-badge&logo=bitcoin&logoColor=white" alt="Bitcoin"/>
       </a>
     </td>
     <td align="center">
-      <a href="https://tronscan.org/#/address/YOUR_TRC20_WALLET_ADDRESS">
+      <a href="https://tronscan.org/#/address/TXTTEu5dN9FRRPgxh4AHVpFEQbCccsT5PA">
         <img src="https://img.shields.io/badge/USDT-TRC--20-26A17B?style=for-the-badge&logo=tether&logoColor=white" alt="USDT TRC-20"/>
       </a>
     </td>
     <td align="center">
-      <a href="https://etherscan.io/address/YOUR_ETH_WALLET_ADDRESS">
+      <a href="https://etherscan.io/address/0x34D442d2136677970061E997A07242d3921eb6df">
         <img src="https://img.shields.io/badge/USDT-ERC--20-627EEA?style=for-the-badge&logo=ethereum&logoColor=white" alt="USDT ERC-20"/>
       </a>
     </td>
     <td align="center">
-      <a href="https://bscscan.com/address/YOUR_BEP20_WALLET_ADDRESS">
+      <a href="https://bscscan.com/address/0x34D442d2136677970061E997A07242d3921eb6df">
         <img src="https://img.shields.io/badge/USDT-BEP--20-F0B90B?style=for-the-badge&logo=binance&logoColor=white" alt="USDT BEP-20"/>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://tronscan.org/#/address/YOUR_TRX_WALLET_ADDRESS">
-        <img src="https://img.shields.io/badge/TRX-TRON-E4063A?style=for-the-badge&logo=tron&logoColor=white" alt="TRX TRON"/>
       </a>
     </td>
   </tr>
   <tr>
     <td align="center"><sub>₿ Bitcoin</sub></td>
-    <td align="center"><sub>🟢 TRON Network</sub></td>
-    <td align="center"><sub>🔷 Ethereum</sub></td>
-    <td align="center"><sub>🟡 BNB Chain</sub></td>
-    <td align="center"><sub>🔴 TRON Native</sub></td>
+    <td align="center"><sub>🟢 TRON USDT</sub></td>
+    <td align="center"><sub>🔷 Ethereum USDT</sub></td>
+    <td align="center"><sub>🟡 BNB Chain USDT</sub></td>
   </tr>
   <tr>
-    <td align="center"></td>
     <td align="center">
-      <a href="https://tronscan.org/#/address/YOUR_TRC20_WALLET_ADDRESS">
+      <a href="https://tronscan.org/#/address/TXTTEu5dN9FRRPgxh4AHVpFEQbCccsT5PA">
+        <img src="https://img.shields.io/badge/TRX-TRON-E4063A?style=for-the-badge&logo=tron&logoColor=white" alt="TRX TRON"/>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://tronscan.org/#/address/TXTTEu5dN9FRRPgxh4AHVpFEQbCccsT5PA">
         <img src="https://img.shields.io/badge/USDC-TRC--20-2775CA?style=for-the-badge&logo=usdcoin&logoColor=white" alt="USDC TRC-20"/>
       </a>
     </td>
     <td align="center">
-      <a href="https://etherscan.io/address/YOUR_ETH_WALLET_ADDRESS">
+      <a href="https://etherscan.io/address/0x34D442d2136677970061E997A07242d3921eb6df">
         <img src="https://img.shields.io/badge/USDC-ERC--20-2775CA?style=for-the-badge&logo=usdcoin&logoColor=white" alt="USDC ERC-20"/>
       </a>
     </td>
     <td align="center">
-      <a href="https://bscscan.com/address/YOUR_BEP20_WALLET_ADDRESS">
+      <a href="https://bscscan.com/address/0x34D442d2136677970061E997A07242d3921eb6df">
         <img src="https://img.shields.io/badge/USDC-BEP--20-2775CA?style=for-the-badge&logo=usdcoin&logoColor=white" alt="USDC BEP-20"/>
       </a>
     </td>
-    <td align="center"></td>
   </tr>
   <tr>
-    <td align="center"></td>
+    <td align="center"><sub>🔴 TRON Native</sub></td>
     <td align="center"><sub>🟢 TRON USDC</sub></td>
     <td align="center"><sub>🔷 Ethereum USDC</sub></td>
     <td align="center"><sub>🟡 BNB Chain USDC</sub></td>
-    <td align="center"></td>
   </tr>
 </table>
 
