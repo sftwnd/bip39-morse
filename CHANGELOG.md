@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-05-16
+
 ### Documentation
 - `CONTRIBUTING.ru.md` — full Russian translation of `CONTRIBUTING.md`,
   matching the bilingual treatment already used for the README. Both
@@ -122,5 +124,6 @@ First public release.
   phrase. README ships an explicit *Security warning* section about
   running this on a clean live OS for any real seed generation.
 
-[Unreleased]: https://github.com/sftwnd/bip39-morse/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/sftwnd/bip39-morse/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/sftwnd/bip39-morse/releases/tag/v1.0.1
 [1.0.0]: https://github.com/sftwnd/bip39-morse/releases/tag/v1.0.0
