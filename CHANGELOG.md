@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-05-16
+
+### Documentation
+- `CONTRIBUTING.ru.md` — full Russian translation of `CONTRIBUTING.md`,
+  matching the bilingual treatment already used for the README. Both
+  files now cross-link to each other at the top, mirroring the README
+  pattern. The English `CONTRIBUTING.md` was also brought up to date —
+  the *Adding a Morse locale* table now lists the Greek (`el`) and
+  Polish entries that have shipped since the file was first written.
+  Closes #9.
+
+### Fixed
+- **Safety: ß / SS round-trip mismatch in reverse mode.** Python's
+  `str.upper()` maps lowercase `ß` to the two-character string `'SS'`,
+  which silently broke the forward/reverse bit-level round-trip — `ß`'s
+  7-bit code `...--..` became a 6-bit `'SS'` on re-encoding. Any German
+  passphrase containing `ß` would have caused the README's
+  "round-trip self-check" safety workflow to fail. `bits_to_text` now
+  emits `ẞ` (U+1E9E LATIN CAPITAL LETTER SHARP S) for that bit pattern,
+  restoring the round-trip invariant. Discovered by the new
+  hypothesis-based property tests added in this release. Closes #8
+  alongside the property-tests work.
+
+### Tests
+- Property-based round-trip tests using `hypothesis` for the
+  `bits_to_text → char_to_bits` invariant. For random 128 / 192 / 256-bit
+  strings, feeding the reverse-decoded text back through forward mode
+  must reproduce the exact same bit string. Parametrised over the
+  built-in `en` / `ru` locales, the shipped Greek `el`, every individual
+  Latin accent extension layered over `en`, and the worst-case
+  "all four Latin extensions loaded together" stack. Uses
+  `@settings(derandomize=True)` so each run replays the same examples
+  for CI reproducibility; override locally with
+  `pytest --hypothesis-seed=random` for exploratory fuzzing. Adds
+  `hypothesis>=6.0` to the test extras. Closes #8.
+
 ### Added
 - `examples/greek.txt` — ITU-R M.1677-1 Greek alphabet (Α–Ω, 24 letters)
   as a standalone `locale: el`. Greek's Ε and Τ cover the 1-bit codes 0
@@ -88,5 +124,6 @@ First public release.
   phrase. README ships an explicit *Security warning* section about
   running this on a clean live OS for any real seed generation.
 
-[Unreleased]: https://github.com/sftwnd/bip39-morse/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/sftwnd/bip39-morse/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/sftwnd/bip39-morse/releases/tag/v1.0.1
 [1.0.0]: https://github.com/sftwnd/bip39-morse/releases/tag/v1.0.0
