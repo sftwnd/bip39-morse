@@ -29,7 +29,19 @@ bip39-morse --morse-table examples/japanese.txt --length 12 --ascii
 # затем ввести ироху и нажать Enter
 ```
 
-Полный пайплайн демо живёт в [`docs/generate_demo.py`](docs/generate_demo.py) — `python3 docs/generate_demo.py` перегенерирует `demo.cast` → `demo.svg` (через `termtosvg`) → втыкает watermark, и `demo-final.svg` → `demo-final.png` (через `rsvg-convert`). Чтобы пересобрать с нуля: `pip install termtosvg` и `brew install librsvg`.
+### Обратное направление — мнемоника → Морзе-текст
+
+То же демо, но в режиме `--reverse`. 12 BIP39-слов из примера выше набираются с префикс-автодополнением (каждое слово коммитится, как только префикс становится уникальным), а инструмент декодирует получившиеся 128 бит энтропии обратно в Морзе-латиницу. Финальная распечатка отформатирована `--group-size 4 --per-line 4` — блоки по 4 символа, 4 блока в строке:
+
+<img src="docs/demo-reverse.svg" alt="Анимированное демо: reverse-режим декодирует мнемонику из иросу обратно в Морзе-текст, отформатированный блоками 4x4">
+
+<img src="docs/demo-reverse-final.png" alt="Reverse финал: shell prompt, затем декодированный Морзе-текст блоками 4x4">
+
+Декодированный текст round-trip'ит через forward-режим: подав его обратно как Морзе-фразу, получите те же 128 бит энтропии и те же первые 11 слов мнемоники (стандартная BIP39-оговорка по поводу последнего слова с контрольной суммой). См. [round-trip self-check](#предупреждение-по-безопасности--прочитайте-до-того-как-сгенерируете-что-то-всерьёз) под предупреждением по безопасности.
+
+### Pipeline
+
+Полный пайплайн демо живёт в [`docs/generate_demo.py`](docs/generate_demo.py) — `python3 docs/generate_demo.py` перегенерирует оба cast'а (forward + reverse) и рендерит их через `termtosvg` (loop delay 5 с, чтобы финальный кадр успевал прочитаться), плюс инъекция watermark, потом растеризует каждый статичный SVG в PNG через `rsvg-convert`. Чтобы пересобрать с нуля: `pip install termtosvg` и `brew install librsvg`.
 
 ## Предупреждение по безопасности — прочитайте до того, как сгенерируете что-то всерьёз
 
@@ -301,11 +313,15 @@ examples/
   french.txt      ITU-R M.1677-1 расширение для французского (locale: en)
   spanish.txt     ITU-R M.1677-1 расширение для испанского (locale: en)
 docs/
-  generate_demo.py  Полный пайплайн демо (cast + SVG + PNG с watermark)
-  demo.cast         asciinema v2 — исходник демо с иросой
-  demo.svg          анимированный SVG, встраиваемый в README
-  demo-final.svg    статический SVG-источник для PNG fallback
-  demo-final.png    статичный PNG финального состояния терминала
+  generate_demo.py        Полный пайплайн демо (forward + reverse, SVG + PNG, watermark)
+  demo.cast               asciinema v2 — forward (ироха → мнемоника) исходник
+  demo.svg                анимированный SVG forward-демо
+  demo-final.svg          статичный SVG forward-финала
+  demo-final.png          статичный PNG forward-финала
+  demo-reverse.cast       asciinema v2 — reverse (мнемоника → Морзе) исходник
+  demo-reverse.svg        анимированный SVG reverse-демо
+  demo-reverse-final.svg  статичный SVG reverse-финала
+  demo-reverse-final.png  статичный PNG reverse-финала
 tests/
   test_morse.py
   test_morse_tables.py

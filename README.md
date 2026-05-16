@@ -29,7 +29,19 @@ bip39-morse --morse-table examples/japanese.txt --length 12 --ascii
 # then type the iroha and press Enter
 ```
 
-The full demo pipeline is in [`docs/generate_demo.py`](docs/generate_demo.py) — `python3 docs/generate_demo.py` regenerates `demo.cast` → `demo.svg` (via `termtosvg`) → injects the watermark, and `demo-final.svg` → `demo-final.png` (via `rsvg-convert`). To rebuild from scratch: `pip install termtosvg` and `brew install librsvg`.
+### Reverse direction — mnemonic → Morse text
+
+Same demo run in `--reverse` mode. The 12 BIP39 words from above are typed in (prefix-autocomplete commits each word as soon as it's unique), and the tool decodes the resulting 128 entropy bits back into Morse-shaped Latin text. The final print is formatted as `--group-size 4 --per-line 4`, i.e. blocks of 4 characters, 4 blocks per row:
+
+<img src="docs/demo-reverse.svg" alt="Animated terminal demo: reverse-mode decoding of the iroha-derived mnemonic into Morse text, formatted as 4x4 blocks">
+
+<img src="docs/demo-reverse-final.png" alt="Reverse final state: shell prompt, then the decoded Morse text in 4x4 blocks">
+
+The decoded text round-trips through forward mode: feeding it back as a Morse phrase reproduces the same 128 entropy bits, hence the same first 11 mnemonic words (BIP39's last-word-checksum behaviour is the usual caveat). See the [round-trip self-check](#security-warning--read-this-before-generating-anything-real) under the security warning.
+
+### Pipeline
+
+The full demo pipeline is in [`docs/generate_demo.py`](docs/generate_demo.py) — `python3 docs/generate_demo.py` regenerates both casts (forward + reverse) and renders them via `termtosvg` (loop delay 5 s, so the final frame lingers long enough to read) plus watermark injection, then rasterises each static SVG to PNG via `rsvg-convert`. To rebuild from scratch: `pip install termtosvg` and `brew install librsvg`.
 
 ## Security warning — read this before generating anything real
 
@@ -300,11 +312,15 @@ examples/
   french.txt      ITU-R M.1677-1 French accent extension (locale: en)
   spanish.txt     ITU-R M.1677-1 Spanish accent extension (locale: en)
 docs/
-  generate_demo.py  Full demo pipeline (cast + SVG + PNG with watermark)
-  demo.cast         asciinema v2 source for the iroha demo
-  demo.svg          animated SVG embedded in the README
-  demo-final.svg    static SVG source for the PNG fallback
-  demo-final.png    static PNG of the final terminal state
+  generate_demo.py        Full demo pipeline (forward + reverse, SVG + PNG, watermark)
+  demo.cast               asciinema v2 source for the forward (iroha → mnemonic) demo
+  demo.svg                animated SVG of the forward demo
+  demo-final.svg          static SVG of the forward final state
+  demo-final.png          static PNG of the forward final state
+  demo-reverse.cast       asciinema v2 source for the reverse (mnemonic → Morse) demo
+  demo-reverse.svg        animated SVG of the reverse demo
+  demo-reverse-final.svg  static SVG of the reverse final state
+  demo-reverse-final.png  static PNG of the reverse final state
 tests/
   test_morse.py
   test_morse_tables.py

@@ -1,4 +1,4 @@
-{"version": 2, "width": 100, "height": 12, "timestamp": 1778928648, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}, "title": "bip39-morse demo — iroha (DEMO PHRASE, DO NOT USE)"}
+{"version": 2, "width": 100, "height": 14, "timestamp": 1778930615, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}, "title": "bip39-morse demo — forward (iroha → mnemonic, DEMO)"}
 [0.0, "o", "\u001b[1;32m$\u001b[0m "]
 [0.4, "o", "bip39-morse --morse-table examples/japanese.txt --length 12 --ascii\r\n"]
 [1.2000000000000002, "o", "\u001b[2J\u001b[H\u001b[1;36mСлов: 12 (128 бит энтропии)\u001b[0m\r\n\u001b[31m●\u001b[0m \r\n   \u001b[31m\u001b[0m----------------------------------------  0/128\r\n\u001b[1m›\u001b[0m  \u001b[7m_\u001b[0m\r\n"]
