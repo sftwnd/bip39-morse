@@ -1,0 +1,17 @@
+# locale: en
+# name: Spanish accent extensions (ñ, ü)
+#
+# Source: ITU-R M.1677-1.
+# Loaded under locale=en so the letters extend the built-in English
+# alphabet rather than creating a separate locale — the standard A-Z
+# codes are reused; this file only adds the two extra characters.
+#
+# Note: ITU defines codes for Ñ and Ü; the acute-accented vowels of
+# Spanish (Á, É, Í, Ó, Ú) have no standard Morse code — operators
+# traditionally drop the accent. Edit this file if your convention
+# says otherwise.
+#
+# Format: <char> <whitespace> <morse>   ('.' = dit, '-' = dah)
+
+Ñ --.--
+Ü ..--

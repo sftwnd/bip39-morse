@@ -1,0 +1,14 @@
+# locale: en
+# name: German accent extensions (ä, ö, ü, ß)
+#
+# Source: ITU-R M.1677-1.
+# Loaded under locale=en so the letters extend the built-in English
+# alphabet rather than creating a separate locale — the standard A-Z
+# codes are reused; this file only adds the four extra characters.
+#
+# Format: <char> <whitespace> <morse>   ('.' = dit, '-' = dah)
+
+Ä .-.-
+Ö ---.
+Ü ..--
+ß ...--..
