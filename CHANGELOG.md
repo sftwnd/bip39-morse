@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### CI
+- Bump `actions/checkout` v4 → v6 and `actions/setup-python` v5 → v6 in
+  `.github/workflows/tests.yml`. Both v6 majors run on Node.js 24,
+  silencing the Node 20 deprecation warning and future-proofing CI past
+  GitHub's September 2026 Node 20 removal. Closes #12.
+
 ### Tests
 - Reach 100% line coverage of the core modules (`bip39`, `bitstream`,
   `morse`, `reverse`). Adds defensive-guard tests for early-exit branches
