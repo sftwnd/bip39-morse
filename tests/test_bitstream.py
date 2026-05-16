@@ -166,3 +166,20 @@ def test_indices_24():
     for _ in range(256):
         s.push('e', '0')
     assert len(s.indices()) == 24
+
+
+def test_checksum_bits_empty_when_not_ready():
+    s = make_stream(12)
+    assert not s.is_ready
+    assert s.checksum_bits() == ''
+
+
+def test_indices_empty_when_not_ready():
+    s = make_stream(12)
+    assert not s.is_ready
+    assert s.indices() == []
+
+
+def test_entropy_hex_groups_empty_when_entropy_bits_zero():
+    s = BitStream(entropy_bits=0)
+    assert s.entropy_hex_groups() == ''
