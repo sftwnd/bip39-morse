@@ -1,0 +1,47 @@
+# locale: el
+# name: Greek alphabet (Α–Ω, 24 letters)
+#
+# Source: ITU-R M.1677-1, section 1.1.4 (Greek alphabet).
+# This is a STANDALONE locale (not a layer over en/ru) — select it in
+# reverse mode with --lang el.
+#
+# 1-bit coverage: Ε ('.') and Τ ('-') cover bit codes '0' and '1' at
+# length 1, mirroring en's e/t and ru's е/т. The reverse decoder's
+# letter-table therefore always matches at length 1 and the digit /
+# punctuation fallback is unreachable for any bit string (same
+# guarantee as the built-in alphabets).
+#
+# Case: characters are stored lowercase; lookup is case-insensitive
+# via str.lower(), which Python handles correctly for Greek (Α↔α,
+# Ω↔ω, …). The final sigma ς is included as a convenience extension
+# (mapped to the same code as σ); ITU-R M.1677-1 does not list ς
+# separately. In reverse direction σ wins (listed first) — the final
+# form is encode-only.
+#
+# Format: <char> <whitespace> <morse>   ('.' = dit, '-' = dah)
+
+Α .-
+Β -...
+Γ --.
+Δ -..
+Ε .
+Ζ --..
+Η ....
+Θ -.-.
+Ι ..
+Κ -.-
+Λ .-..
+Μ --
+Ν -.
+Ξ -..-
+Ο ---
+Π .--.
+Ρ .-.
+Σ ...
+Τ -
+Υ -.--
+Φ ..-.
+Χ ----
+Ψ --.-
+Ω .--
+ς ...

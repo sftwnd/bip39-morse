@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `examples/greek.txt` — ITU-R M.1677-1 Greek alphabet (Α–Ω, 24 letters)
+  as a standalone `locale: el`. Greek's Ε and Τ cover the 1-bit codes 0
+  and 1, so reverse-mode decoding has the same letter-only round-trip
+  guarantee as the built-in en/ru locales. Includes final sigma ς as an
+  encode-only convenience entry sharing σ's code (medial σ wins in
+  reverse direction). Closes #6.
 - `examples/polish.txt` — ITU-R M.1677-1 Polish accent extension under
   `locale: en` (Ą, Ć, Ę, Ł, Ń, Ó, Ś, Ź, Ż). Layers onto the built-in
   English alphabet exactly like the existing German / French / Spanish

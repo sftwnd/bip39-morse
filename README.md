@@ -105,7 +105,15 @@ A ready example lives at [`examples/japanese.txt`](examples/japanese.txt) — th
 python -m bip39_morse --morse-table examples/japanese.txt --reverse --lang jp
 ```
 
-Then reverse-mode output will be rendered in katakana. (The same bit pattern `01` decodes as `A` for `--lang en`, `А` for `--lang ru`, and `イ` for `--lang jp` — `bits_to_text` only reads layers tagged with the requested locale.)
+Then reverse-mode output will be rendered in katakana. (The same bit pattern `01` decodes as `A` for `--lang en`, `А` for `--lang ru`, `イ` for `--lang jp`, and `Α` for `--lang el` — `bits_to_text` only reads layers tagged with the requested locale.)
+
+A second new-alphabet example: [`examples/greek.txt`](examples/greek.txt) — the 24-letter Greek alphabet (Α–Ω) from ITU-R M.1677-1, section 1.1.4. Like Japanese, it's a *standalone* locale (`# locale: el`), not a layer over Latin. Load it with:
+
+```bash
+python -m bip39_morse --morse-table examples/greek.txt --reverse --lang el
+```
+
+Greek mirrors the Latin alphabet's 1-bit coverage: `Ε` (`.`) and `Τ` (`-`) cover the single-bit codes `0` and `1`, so reverse decoding in `el` has the same letter-only round-trip guarantee as the built-in `en`/`ru` locales — the digit and punctuation fallbacks are never reached. The file also includes final sigma `ς` as an encode-only convenience entry sharing `σ`'s code (`...`).
 
 #### Latin accent extensions (German / French / Spanish / Polish)
 
@@ -309,6 +317,7 @@ bip39_morse/
     russian.txt    2048-word BIP39 Russian wordlist
 examples/
   japanese.txt    Sample Wabun (Japanese) Morse table (locale: jp)
+  greek.txt       ITU-R M.1677-1 Greek alphabet (locale: el)
   german.txt      ITU-R M.1677-1 German accent extension (locale: en)
   french.txt      ITU-R M.1677-1 French accent extension (locale: en)
   spanish.txt     ITU-R M.1677-1 Spanish accent extension (locale: en)
