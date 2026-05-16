@@ -11,6 +11,17 @@ REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 EXAMPLES_JP = REPO_ROOT / 'examples' / 'japanese.txt'
 EXAMPLES_PL = REPO_ROOT / 'examples' / 'polish.txt'
 EXAMPLES_EL = REPO_ROOT / 'examples' / 'greek.txt'
+EXAMPLES_CZ = REPO_ROOT / 'examples' / 'czech.txt'
+
+# Drop-diacritic mapping used by examples/czech.txt: each Czech accented
+# letter maps to the same Morse code as its base Latin letter (per the
+# Czech radio convention cited in the file header). Keep in sync with
+# czech.txt itself if either side changes.
+CZECH_BASE = {
+    'á': 'a', 'č': 'c', 'ď': 'd', 'é': 'e', 'ě': 'e',
+    'í': 'i', 'ň': 'n', 'ó': 'o', 'ř': 'r', 'š': 's',
+    'ť': 't', 'ú': 'u', 'ů': 'u', 'ý': 'y', 'ž': 'z',
+}
 
 
 @pytest.fixture(autouse=True)
@@ -354,3 +365,76 @@ def test_greek_forward_accepts_chars_after_load():
     morse.load_table_file(str(EXAMPLES_EL))
     assert morse.char_to_bits('α') == '01'
     assert morse.char_to_bits('Ω') == '011'
+
+
+# --- examples/czech.txt (drop-diacritic, pending Czech-contributor review)
+
+def test_load_czech_example_file():
+    """Loading czech.txt registers 15 Czech letters under the en layer,
+    each sharing the code of its base Latin letter (drop-diacritic
+    convention; see the file header for sources)."""
+    locale = morse.load_table_file(str(EXAMPLES_CZ))
+    assert locale == 'en'
+    en = morse.locale_table('en')
+    for cz, base in CZECH_BASE.items():
+        assert en[cz] == en[base], f'{cz!r} should share the code of {base!r}'
+
+
+@pytest.mark.parametrize('cz_char,base_char', sorted(CZECH_BASE.items()))
+def test_czech_chars_encode_as_base_latin(cz_char, base_char):
+    """char_to_bits(cz_char) must equal char_to_bits(base_char) — the
+    central property of the drop-diacritic encoding. Verified for both
+    lowercase and uppercase input."""
+    morse.load_table_file(str(EXAMPLES_CZ))
+    cz_bits = morse.char_to_bits(cz_char)
+    base_bits = morse.char_to_bits(base_char)
+    assert cz_bits == base_bits
+    assert morse.char_to_bits(cz_char.upper()) == cz_bits
+
+
+def test_czech_reverse_picks_base_latin_letter():
+    """Drop-diacritic means reverse-mode decoding never produces a Czech
+    letter: base Latin always wins because base 'c' (U+0063) precedes
+    Czech 'č' (U+010D) in the alphabetical tie-break in bits_to_text
+    (both candidates have the same usage and code length)."""
+    morse.load_table_file(str(EXAMPLES_CZ))
+    assert morse.bits_to_text('1010', locale='en') == 'C'  # not Č
+    assert morse.bits_to_text('000', locale='en') == 'S'   # not Š
+    assert morse.bits_to_text('010', locale='en') == 'R'   # not Ř
+    assert morse.bits_to_text('1100', locale='en') == 'Z'  # not Ž
+
+
+def test_czech_overrides_french_e_when_loaded_after():
+    """Documented load-order behaviour: czech.txt loaded after
+    french.txt overrides É from the French ITU code (..-.., '00100')
+    to the Czech drop-diacritic form ('.', '0')."""
+    morse.load_table_file(str(REPO_ROOT / 'examples' / 'french.txt'))
+    assert morse.char_to_bits('é') == '00100'  # French ITU code
+    morse.load_table_file(str(EXAMPLES_CZ))
+    assert morse.char_to_bits('é') == '0'      # Czech drop-diacritic
+
+
+def test_czech_roundtrip_forward_reverse_forward():
+    """Round-trip on a Czech sentence containing every diacritic letter:
+    forward → reverse → forward preserves the 128-bit entropy. The
+    reverse-mode output is Latin-only (drop-diacritic), but the bit
+    invariant is maintained — that's all forward mode cares about."""
+    morse.load_table_file(str(EXAMPLES_CZ))
+    # Classic Czech pangram-like sentence touching every diacritic.
+    phrase = 'ŽLUŤOUČKÝ KŮŇ ÚPĚL ĎÁBELSKÉ ÓDY ' * 5
+    bits = ''.join(morse.char_to_bits(c) for c in phrase)
+    assert len(bits) >= 128
+    entropy = bits[:128]
+    text = morse.bits_to_text(entropy, locale='en')
+    re_bits = ''.join(morse.char_to_bits(c) for c in text)
+    assert re_bits[:128] == entropy
+
+
+def test_czech_forward_accepts_chars_after_load():
+    """Before loading czech.txt, char_to_bits('č') must error; after, it
+    produces base-Latin bits."""
+    with pytest.raises(ValueError):
+        morse.char_to_bits('č')
+    morse.load_table_file(str(EXAMPLES_CZ))
+    assert morse.char_to_bits('č') == '1010'
+    assert morse.char_to_bits('Ž') == '1100'

@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `examples/czech.txt` — Czech accent extension under `locale: en`
+  implementing the **drop-diacritic** convention from Czech amateur
+  radio practice (cs.wikipedia.org/wiki/Morseova_abeceda), since
+  ITU-R M.1677-1 does not define codes for the 15 Czech-specific
+  diacritic letters. Each Czech letter (Á Č Ď É Ě Í Ň Ó Ř Š Ť Ú Ů Ý Ž)
+  maps to the same bit string as its base Latin letter; reverse-mode
+  decoding always picks the base Latin form. **Ships pending review by
+  a Czech-speaking contributor with access to an authoritative
+  national standard** — see issue #7 for the rationale. Closes #7
+  on confirmation.
 - `examples/greek.txt` — ITU-R M.1677-1 Greek alphabet (Α–Ω, 24 letters)
   as a standalone `locale: el`. Greek's Ε and Τ cover the 1-bit codes 0
   and 1, so reverse-mode decoding has the same letter-only round-trip

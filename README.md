@@ -115,7 +115,7 @@ python -m bip39_morse --morse-table examples/greek.txt --reverse --lang el
 
 Greek mirrors the Latin alphabet's 1-bit coverage: `Ε` (`.`) and `Τ` (`-`) cover the single-bit codes `0` and `1`, so reverse decoding in `el` has the same letter-only round-trip guarantee as the built-in `en`/`ru` locales — the digit and punctuation fallbacks are never reached. The file also includes final sigma `ς` as an encode-only convenience entry sharing `σ`'s code (`...`).
 
-#### Latin accent extensions (German / French / Spanish / Polish)
+#### Latin accent extensions (German / French / Spanish / Polish / Czech)
 
 Several Western-European languages don't need a separate alphabet — they just add a handful of accented letters on top of A–Z. The repository ships four ITU-R M.1677-1 extensions tagged with `locale: en`, so they **layer onto the built-in English alphabet** instead of creating a new locale:
 
@@ -125,8 +125,17 @@ Several Western-European languages don't need a separate alphabet — they just 
 | [`examples/french.txt`](examples/french.txt)  | `À`, `Ç`, `É`, `È` |
 | [`examples/spanish.txt`](examples/spanish.txt) | `Ñ`, `Ü` |
 | [`examples/polish.txt`](examples/polish.txt)   | `Ą`, `Ć`, `Ę`, `Ł`, `Ń`, `Ó`, `Ś`, `Ź`, `Ż` |
+| [`examples/czech.txt`](examples/czech.txt) *(drop-diacritic, see note below)* | `Á`, `Č`, `Ď`, `É`, `Ě`, `Í`, `Ň`, `Ó`, `Ř`, `Š`, `Ť`, `Ú`, `Ů`, `Ý`, `Ž` |
 
 You can load any combination — they don't conflict with each other (the few overlapping letters, e.g. `Ü` in both German and Spanish, share the same ITU code). Polish is a special case: six of its nine letters share a bit-string with another extension (`Ą`≡`Ä`, `Ć`≡`Ç`, `Ę`≡`É`, `Ł`≡`È`, `Ń`≡`Ñ`, `Ó`≡`Ö`). Forward direction is unaffected; in reverse direction the **first-loaded** file's character wins for any shared code, so reorder the `--morse-table` flags if you want a particular language to dominate the decoded output.
+
+##### Czech (drop-diacritic convention)
+
+Czech is a different category from the four extensions above. **ITU-R M.1677-1 does not define Morse codes for any of the 15 Czech-specific diacritic letters** (Á Č Ď É Ě Í Ň Ó Ř Š Ť Ú Ů Ý Ž), and Czech amateur radio practice is to **drop the diacritic** when transmitting — Č is sent as C, Š as S, Ř as R, and so on; the receiver reconstructs the diacritic from word context. The Czech Wikipedia article on [Morseova abeceda](https://cs.wikipedia.org/wiki/Morseova_abeceda) states this convention explicitly.
+
+`examples/czech.txt` ships that convention as a convenience layer: each Czech letter maps to the **same bit string as its base Latin letter**, so Czech speakers can type Czech words verbatim (`Žluťoučký kůň úpěl ďábelské ódy` works) without the tool erroring on diacritics. Reverse-mode decoding always produces base Latin (never `Č` or `Š`), again matching the radio convention. The file deliberately overrides `É` (from `french.txt`) and `Ó` (from `german.txt`/`polish.txt`) if loaded after them — the load-order rule above applies.
+
+If you have an authoritative national-standard Czech Morse code set that differs from this convention, please open a PR superseding the file — see [issue #7](https://github.com/sftwnd/bip39-morse/issues/7) for the discussion.
 
 ##### Example: French session
 
@@ -322,6 +331,7 @@ examples/
   french.txt      ITU-R M.1677-1 French accent extension (locale: en)
   spanish.txt     ITU-R M.1677-1 Spanish accent extension (locale: en)
   polish.txt      ITU-R M.1677-1 Polish accent extension (locale: en)
+  czech.txt       Czech drop-diacritic accent extension (locale: en)
 docs/
   generate_demo.py        Full demo pipeline (forward + reverse, SVG + PNG, watermark)
   demo.cast               asciinema v2 source for the forward (iroha → mnemonic) demo
