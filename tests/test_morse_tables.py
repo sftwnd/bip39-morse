@@ -367,6 +367,25 @@ def test_greek_forward_accepts_chars_after_load():
     assert morse.char_to_bits('Ω') == '011'
 
 
+def test_german_sharp_s_roundtrips():
+    """Regression for the ß ↔ SS bug discovered by hypothesis fuzzing:
+    Python's str.upper() maps lowercase 'ß' to multi-character 'SS',
+    which silently broke the forward/reverse round-trip — ß's 7-bit
+    code became a 6-bit 'SS' on re-encoding. bits_to_text must emit
+    'ẞ' (U+1E9E LATIN CAPITAL LETTER SHARP S) so the round-trip stays
+    symmetric; this is the invariant the README's "round-trip self-check"
+    safety workflow relies on."""
+    morse.load_table_file(str(REPO_ROOT / 'examples' / 'german.txt'))
+    # ß has Morse code '...--..' = '0001100' (7 bits).
+    sharp_s_bits = '0001100'
+    out = morse.bits_to_text(sharp_s_bits, locale='en')
+    assert out == 'ẞ', f'expected ẞ (single char), got {out!r}'
+    # And the round-trip closes.
+    assert morse.char_to_bits(out) == sharp_s_bits
+    # ẞ.lower() == ß so the lookup goes back through the lowercase forward map.
+    assert out.lower() == 'ß'
+
+
 # --- examples/czech.txt (drop-diacritic, pending Czech-contributor review)
 
 def test_load_czech_example_file():

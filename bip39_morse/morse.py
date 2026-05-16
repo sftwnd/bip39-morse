@@ -190,6 +190,21 @@ def _bits_table(alphabet: dict) -> dict:
     return result
 
 
+def _upper_for_display(ch: str) -> str:
+    """Uppercase a single character for reverse-mode display, preserving
+    bit-length symmetry. Python's ``str.upper()`` maps a few lowercase
+    letters to multi-character strings — notably German ``ß`` → ``'SS'``
+    — which silently breaks the forward/reverse round-trip because
+    ``'SS'`` has different bits than ``ß`` (and so the round-trip
+    self-check the README tells users to perform would fail for any
+    passphrase containing ``ß``). For ``ß`` we use ``ẞ`` (U+1E9E LATIN
+    CAPITAL LETTER SHARP S) explicitly; all other characters fall
+    through to ordinary ``str.upper()``."""
+    if ch == 'ß':
+        return 'ẞ'
+    return ch.upper()
+
+
 def _pick_least_used(
     bits: str,
     i: int,
@@ -207,7 +222,7 @@ def _pick_least_used(
     for L in range(1, limit + 1):
         prefix = bits[i:i + L]
         if prefix in table:
-            ch = table[prefix].upper()
+            ch = _upper_for_display(table[prefix])
             # Sort key: (usage, -length, char). Smallest wins.
             candidates.append((usage.get(ch, 0), -L, ch, L))
     if not candidates:

@@ -1,5 +1,7 @@
 # Contributing to bip39-morse
 
+*[Русская версия](CONTRIBUTING.ru.md)*
+
 Thanks for considering a contribution. This project is small and focused, so
 the contribution surface is well-defined — please skim this document before
 opening an issue or PR.
@@ -64,9 +66,11 @@ The repository already ships:
 | File | Locale | Standard |
 |------|--------|----------|
 | `examples/japanese.txt` | `jp` | ITU-R M.1677-1 (Wabun) + JARL |
-| `examples/german.txt`  | `en` (layer) | ITU-R M.1677-1 |
-| `examples/french.txt`  | `en` (layer) | ITU-R M.1677-1 |
-| `examples/spanish.txt` | `en` (layer) | ITU-R M.1677-1 |
+| `examples/greek.txt`    | `el` | ITU-R M.1677-1 |
+| `examples/german.txt`   | `en` (layer) | ITU-R M.1677-1 |
+| `examples/french.txt`   | `en` (layer) | ITU-R M.1677-1 |
+| `examples/spanish.txt`  | `en` (layer) | ITU-R M.1677-1 |
+| `examples/polish.txt`   | `en` (layer) | ITU-R M.1677-1 |
 
 To add another:
 
