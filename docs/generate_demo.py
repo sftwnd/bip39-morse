@@ -125,15 +125,32 @@ def _hex_from_bits(bits: str) -> str:
 # Forward demo
 # ----------------------------------------------------------------------------
 
-def _forward_frame(stream: BitStream) -> str:
+FORWARD_TUI_LINES = 4
+
+
+def _forward_tui_body(stream: BitStream) -> list[str]:
+    """The 4 TUI lines (without leading clear-screen or cursor-up)."""
     ready = stream.is_ready
     counter = TOTAL_BITS if ready else stream.accumulated_bits
-    return (
-        '\x1b[2J\x1b[H'
-        f'\x1b[1;36mСлов: {TARGET_WORDS} ({ENTROPY_BITS} бит энтропии)\x1b[0m\r\n'
-        f'{_indicator(ready)} {stream.hex_display()}\r\n'
-        f'   {_bar(stream.accumulated_bits, ENTROPY_BITS, ready)}  {counter}/{ENTROPY_BITS}\r\n'
-        f'\x1b[1m›\x1b[0m  {stream.visual_buffer()}\x1b[7m_\x1b[0m\r\n'
+    return [
+        f'\x1b[1;36mСлов: {TARGET_WORDS} ({ENTROPY_BITS} бит энтропии)\x1b[0m',
+        f'{_indicator(ready)} {stream.hex_display()}',
+        f'   {_bar(stream.accumulated_bits, ENTROPY_BITS, ready)}  {counter}/{ENTROPY_BITS}',
+        f'\x1b[1m›\x1b[0m  {stream.visual_buffer()}\x1b[7m_\x1b[0m',
+    ]
+
+
+def _initial_tui(lines: list[str]) -> str:
+    """First-time render: just write the lines below the current cursor.
+    Each line gets \x1b[K to wipe any residue, and \r\n to advance."""
+    return ''.join(f'\x1b[K{line}\r\n' for line in lines)
+
+
+def _redraw_tui(lines: list[str], n_lines: int) -> str:
+    """In-place redraw: move cursor up n_lines, then rewrite each line.
+    The command line above the TUI stays untouched."""
+    return '\x1b[' + str(n_lines) + 'A' + ''.join(
+        f'\r\x1b[K{line}\r\n' for line in lines
     )
 
 
@@ -144,22 +161,27 @@ def build_forward_events() -> list[list]:
 
     events: list[list] = []
     t = 0.0
+    # Shell prompt + typed command (one-shot). The command line stays at row 1
+    # for the rest of the animation — never clear-screened away.
     events.append([t, 'o', '\x1b[1;32m$\x1b[0m '])
     t += T_PROMPT
     events.append([t, 'o', FORWARD_CMD + '\r\n'])
     t += T_AFTER_CMD
-    events.append([t, 'o', _forward_frame(stream)])
+    # Initial empty TUI below the command line.
+    events.append([t, 'o', _initial_tui(_forward_tui_body(stream))])
     t += T_AFTER_INITIAL
+    # Type the iroha kana-by-kana; redraw TUI in place each time.
     for ch in IROHA:
         stream.push(ch, morse.char_to_bits(ch))
         t += T_PER_KANA
-        events.append([t, 'o', _forward_frame(stream)])
+        events.append([t, 'o', _redraw_tui(_forward_tui_body(stream), FORWARD_TUI_LINES)])
     t += T_BEFORE_ENTER
 
+    # On Enter, prompt_toolkit (inline mode) leaves the rendered TUI on
+    # screen and returns control to the CLI which print()s the result on
+    # the next free line. Match that: no clear-screen, just append below.
     wl = load_wordlist('english')
     final = (
-        '\x1b[2J\x1b[H'
-        f'\x1b[1;32m$\x1b[0m {FORWARD_CMD}\r\n'
         f'{stream.normalized_input()}\r\n'
         f'{indices_to_mnemonic(stream.indices(), wl)}\r\n'
         '\r\n'
@@ -174,18 +196,19 @@ def build_forward_events() -> list[list]:
 # Reverse demo
 # ----------------------------------------------------------------------------
 
-def _reverse_frame(entry: WordEntry) -> str:
+REVERSE_TUI_LINES = 6
+
+
+def _reverse_tui_body(entry: WordEntry) -> list[str]:
+    """The 6 TUI lines (without leading clear-screen or cursor-up)."""
     ready = entry.is_ready
     n_completed = len(entry.completed)
     bits = entry.bits()
     hex_text = _hex_from_bits(bits)
 
-    # Live Morse decode of accumulated entropy bits (up to ENTROPY_BITS).
     decode_bits = bits[:ENTROPY_BITS] if len(bits) >= ENTROPY_BITS else bits
     morse_text = morse.bits_to_text(decode_bits, locale='en') if decode_bits else ''
 
-    # Input line: completed words in dim green, current partial in white,
-    # cursor at the end.
     completed_str = ' '.join(entry.completed)
     if completed_str and entry.current:
         input_line = (
@@ -201,22 +224,20 @@ def _reverse_frame(entry: WordEntry) -> str:
     else:
         input_line = f'\x1b[1m›\x1b[0m  {entry.current}\x1b[7m_\x1b[0m'
 
-    # Candidate list (dimmed). Empty when ready.
     cand_line = ''
     if not ready:
         cands = entry.candidates(limit=8)
         if cands:
             cand_line = '   \x1b[2;37m' + '  '.join(cands) + '\x1b[0m'
 
-    return (
-        '\x1b[2J\x1b[H'
-        f'\x1b[1;36mСлов: {TARGET_WORDS} ({ENTROPY_BITS} бит энтропии)\x1b[0m\r\n'
-        f'{_indicator(ready)} {hex_text}\r\n'
-        f'   {_bar(n_completed, TARGET_WORDS, ready)}  {n_completed}/{TARGET_WORDS} слов\r\n'
-        f'\x1b[1;34mМорзе:\x1b[0m {morse_text}\r\n'
-        f'{input_line}\r\n'
-        f'{cand_line}\r\n'
-    )
+    return [
+        f'\x1b[1;36mСлов: {TARGET_WORDS} ({ENTROPY_BITS} бит энтропии)\x1b[0m',
+        f'{_indicator(ready)} {hex_text}',
+        f'   {_bar(n_completed, TARGET_WORDS, ready)}  {n_completed}/{TARGET_WORDS} слов',
+        f'\x1b[1;34mМорзе:\x1b[0m {morse_text}',
+        input_line,
+        cand_line,
+    ]
 
 
 def build_reverse_events() -> list[list]:
@@ -229,23 +250,21 @@ def build_reverse_events() -> list[list]:
     t += T_PROMPT
     events.append([t, 'o', REVERSE_CMD + '\r\n'])
     t += T_AFTER_CMD
-    events.append([t, 'o', _reverse_frame(entry)])
+    events.append([t, 'o', _initial_tui(_reverse_tui_body(entry))])
     t += T_AFTER_INITIAL
 
     for word in REVERSE_MNEMONIC:
         prev_n = len(entry.completed)
-        # Type chars until auto-commit fires (or word fully typed).
         for ch in word:
             entry.push_char(ch)
             t += T_PER_KEY
-            events.append([t, 'o', _reverse_frame(entry)])
+            events.append([t, 'o', _redraw_tui(_reverse_tui_body(entry), REVERSE_TUI_LINES)])
             if len(entry.completed) > prev_n:
                 break
-        # Some words (e.g. prefixes-of-others) need an explicit commit.
         if len(entry.completed) == prev_n:
             entry.commit_current()
             t += T_PER_KEY
-            events.append([t, 'o', _reverse_frame(entry)])
+            events.append([t, 'o', _redraw_tui(_reverse_tui_body(entry), REVERSE_TUI_LINES)])
         t += T_INTERWORD
 
     t += T_BEFORE_ENTER
@@ -254,10 +273,9 @@ def build_reverse_events() -> list[list]:
     raw_text = morse.bits_to_text(decode_bits, locale='en')
     formatted = format_grouped(raw_text, group_size=4, per_line=4)
 
+    # Append below the last TUI frame, no clear-screen.
     final = (
-        '\x1b[2J\x1b[H'
-        f'\x1b[1;32m$\x1b[0m {REVERSE_CMD}\r\n'
-        + '\r\n'.join(formatted.split('\n')) + '\r\n'
+        '\r\n'.join(formatted.split('\n')) + '\r\n'
         '\r\n'
         '\x1b[1;32m$\x1b[0m \x1b[7m \x1b[0m\r\n'
     )
@@ -300,8 +318,16 @@ COLOURS = {
 }
 
 
-def _write_static_svg(path: pathlib.Path, lines: list[tuple[str, str]]) -> None:
-    """Each entry of `lines` is (colour_key, text). Empty text = blank line."""
+Line = list[tuple[str, str]]  # list of (colour_key, text) segments
+
+
+def _xml_escape(s: str) -> str:
+    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+
+def _write_static_svg(path: pathlib.Path, lines: list[Line]) -> None:
+    """Each entry of `lines` is a list of (colour_key, text) segments rendered
+    on one row. An empty list = blank line."""
     font_size = 14
     char_w = 8.4
     line_h = 20
@@ -319,15 +345,16 @@ def _write_static_svg(path: pathlib.Path, lines: list[tuple[str, str]]) -> None:
         '<rect width="100%" height="100%" fill="#272822"/>',
     ]
     y = pad + line_h
-    for colour, text in lines:
-        text_xml = (
-            text.replace('&', '&amp;')
-            .replace('<', '&lt;')
-            .replace('>', '&gt;')
+    for segments in lines:
+        if not segments:
+            y += line_h
+            continue
+        tspans = ''.join(
+            f'<tspan fill="{COLOURS[colour]}">{_xml_escape(text)}</tspan>'
+            for colour, text in segments
         )
         parts.append(
-            f'<text x="{pad}" y="{y}" fill="{COLOURS[colour]}" '
-            f'xml:space="preserve">{text_xml}</text>'
+            f'<text x="{pad}" y="{y}" xml:space="preserve">{tspans}</text>'
         )
         y += line_h
     wm_y = height - 14
@@ -345,35 +372,59 @@ def _write_static_svg(path: pathlib.Path, lines: list[tuple[str, str]]) -> None:
 
 
 def write_forward_final_svg() -> None:
+    """Static SVG mirroring the final on-screen state: command at the top,
+    the green-state TUI, then the appended normalized phrase + mnemonic
+    + new shell prompt."""
     morse.reset_tables()
     morse.load_table_file(str(EXAMPLES_JP))
     wl = load_wordlist('english')
     stream = BitStream(entropy_bits=ENTROPY_BITS)
     for ch in IROHA:
         stream.push(ch, morse.char_to_bits(ch))
-    lines = [
-        ('green', f'$ {FORWARD_CMD}'),
-        ('white', stream.normalized_input()),
-        ('yellow', indices_to_mnemonic(stream.indices(), wl)),
-        ('white', ''),
-        ('green', '$'),
+
+    bar_full = '#' * BAR_WIDTH
+    lines: list[Line] = [
+        [('green', f'$ {FORWARD_CMD}')],
+        [('blue', f'Слов: {TARGET_WORDS} ({ENTROPY_BITS} бит энтропии)')],
+        [('green', '● '), ('white', stream.hex_display())],
+        [('grey', f'   {bar_full}  {TOTAL_BITS}/{ENTROPY_BITS}')],
+        [('white', f'›  {stream.visual_buffer()}')],
+        [('white', stream.normalized_input())],
+        [('yellow', indices_to_mnemonic(stream.indices(), wl))],
+        [],  # blank
+        [('green', '$')],
     ]
     _write_static_svg(REPO_ROOT / 'docs' / 'demo-final.svg', lines)
 
 
 def write_reverse_final_svg() -> None:
+    """Static SVG mirroring the final on-screen state: command at the top,
+    the green-state reverse TUI (header / hex / bar / Морзе / input / empty
+    candidates), then the appended formatted Morse text + new shell prompt."""
     wl = load_wordlist('english')
     entry = WordEntry(wordlist=wl, target_words=TARGET_WORDS)
     entry.paste_text(' '.join(REVERSE_MNEMONIC))
     decode_bits = entry.entropy_bits_str(ENTROPY_BITS)
     raw_text = morse.bits_to_text(decode_bits, locale='en')
     formatted = format_grouped(raw_text, group_size=4, per_line=4)
+    bits = entry.bits()
+    hex_text = _hex_from_bits(bits)
+    bar_full = '#' * BAR_WIDTH
+    completed_str = ' '.join(entry.completed)
 
-    lines: list[tuple[str, str]] = [('green', f'$ {REVERSE_CMD}')]
+    lines: list[Line] = [
+        [('green', f'$ {REVERSE_CMD}')],
+        [('blue', f'Слов: {TARGET_WORDS} ({ENTROPY_BITS} бит энтропии)')],
+        [('green', '● '), ('white', hex_text)],
+        [('grey', f'   {bar_full}  {TARGET_WORDS}/{TARGET_WORDS} слов')],
+        [('blue', 'Морзе: '), ('white', raw_text)],
+        [('white', '›  '), ('green', completed_str)],
+        [],  # candidates line (empty when ready)
+    ]
     for row in formatted.split('\n'):
-        lines.append(('white', row))
-    lines.append(('white', ''))
-    lines.append(('green', '$'))
+        lines.append([('white', row)])
+    lines.append([])
+    lines.append([('green', '$')])
     _write_static_svg(REPO_ROOT / 'docs' / 'demo-reverse-final.svg', lines)
 
 
