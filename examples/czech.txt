@@ -1,0 +1,64 @@
+# locale: en
+# name: Czech accent extensions — drop-diacritic convention
+#       (á, č, ď, é, ě, í, ň, ó, ř, š, ť, ú, ů, ý, ž)
+#
+# STATUS: Ships as a STARTING POINT pending review by a Czech-speaking
+# contributor with access to an authoritative national standard. See
+# issue #7 for the full discussion.
+#
+# Source / rationale:
+#   ITU-R M.1677-1 does NOT define Morse codes for any of these 15
+#   Czech accented letters. The Czech Wikipedia article on Morseova
+#   abeceda (https://cs.wikipedia.org/wiki/Morseova_abeceda) lists no
+#   Czech-specific codes either — only the same five accents (Ä, Ë,
+#   Ö, Ü, plus the CH digraph) that ITU covers. Czech amateur radio
+#   practice instead drops the diacritic when transmitting:
+#
+#       "České zprávy se do morseovky kódují v písmenech zbavených
+#        diakritiky. Při rozkódování je třeba diakritiku doplnit dle
+#        smyslu slov."
+#       — Czech messages are encoded in Morse using letters STRIPPED
+#         of diacritics; the receiver reconstructs the diacritic from
+#         word context.
+#
+#   This file implements that convention: each Czech accented letter
+#   maps to the same Morse code as its base Latin letter (Č → C, Š → S,
+#   Ř → R, etc.). It is offered so that Czech speakers can type Czech
+#   words verbatim without the tool erroring on diacritics; if you
+#   have an authoritative national-standard code set that defines
+#   Czech-specific Morse codes, please send a PR superseding this file.
+#
+# Practical behaviour:
+#   - Forward direction: typing Č produces the same bits as C. So
+#     char_to_bits('č') == char_to_bits('c'). Same for all 15 letters.
+#   - Reverse direction: bits decode to the BASE Latin letter — never
+#     to the Czech form — because base 'c' (U+0063) precedes Czech
+#     'č' (U+010D) in the alphabetical tie-break in bits_to_text.
+#     Reverse-mode output is plain Latin, matching the Czech radio
+#     convention of letting the receiver reconstruct diacritics.
+#   - Deliberate overrides: if czech.txt is loaded AFTER french.txt or
+#     polish.txt, several characters revert from their accented-
+#     language codes to the base-Latin code:
+#         É (french.txt) ..-..  →  .       (= E)
+#         Ó (german/polish.txt) ---.  →  ---  (= O)
+#     This is intentional — the load-order rule documented in the
+#     README applies. If you want to keep the French É code, do NOT
+#     load czech.txt after french.txt.
+#
+# Format: <char> <whitespace> <morse>   ('.' = dit, '-' = dah)
+
+Á .-
+Č -.-.
+Ď -..
+É .
+Ě .
+Í ..
+Ň -.
+Ó ---
+Ř .-.
+Š ...
+Ť -
+Ú ..-
+Ů ..-
+Ý -.--
+Ž --..

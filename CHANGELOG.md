@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (pending Czech-contributor review)
+- `examples/czech.txt` — Czech accent extension under `locale: en`
+  implementing the **drop-diacritic** convention from Czech amateur
+  radio practice (cs.wikipedia.org/wiki/Morseova_abeceda), since
+  ITU-R M.1677-1 does not define codes for the 15 Czech-specific
+  diacritic letters. Each Czech letter (Á Č Ď É Ě Í Ň Ó Ř Š Ť Ú Ů Ý Ž)
+  maps to the same bit string as its base Latin letter; reverse-mode
+  decoding always picks the base Latin form. **Ships pending review by
+  a Czech-speaking contributor with access to an authoritative
+  national standard** — see issue #7 for the rationale. Closes #7
+  on confirmation.
+
 ## [1.0.2] — 2026-05-17
 
 First release published to PyPI. Strictly a packaging / branding /
