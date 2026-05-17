@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] — 2026-05-17
+
+First release published to PyPI. Strictly a packaging / branding /
+infrastructure release — no runtime behaviour changes since 1.0.1.
+
 ### Packaging
 - PyPI publishing infrastructure via OIDC trusted publishing (no
   long-lived token in repo secrets). Two new workflows:
@@ -166,6 +171,7 @@ First public release.
   phrase. README ships an explicit *Security warning* section about
   running this on a clean live OS for any real seed generation.
 
-[Unreleased]: https://github.com/sftwnd/bip39-morse/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/sftwnd/bip39-morse/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/sftwnd/bip39-morse/releases/tag/v1.0.2
 [1.0.1]: https://github.com/sftwnd/bip39-morse/releases/tag/v1.0.1
 [1.0.0]: https://github.com/sftwnd/bip39-morse/releases/tag/v1.0.0
