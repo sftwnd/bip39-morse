@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo.svg" alt="Логотип MorseKey" width="140">
+  <img src="https://raw.githubusercontent.com/sftwnd/bip39-morse/master/docs/logo.svg" alt="Логотип MorseKey" width="140">
 </p>
 <h1 align="center">MorseKey</h1>
 <p align="center">
@@ -9,11 +9,12 @@
 <p align="center">
   <a href="https://github.com/sftwnd/bip39-morse/actions/workflows/tests.yml"><img alt="CI" src="https://github.com/sftwnd/bip39-morse/actions/workflows/tests.yml/badge.svg"></a>
   <a href="https://github.com/sftwnd/bip39-morse/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/sftwnd/bip39-morse"></a>
-  <a href="LICENSE.md"><img alt="Лицензия: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg"></a>
+  <a href="https://pypi.org/project/bip39-morse/"><img alt="PyPI" src="https://img.shields.io/pypi/v/bip39-morse.svg"></a>
+  <a href="https://github.com/sftwnd/bip39-morse/blob/master/LICENSE.md"><img alt="Лицензия: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg"></a>
   <img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11+-blue.svg">
 </p>
 
-*[English version](README.md)*
+*[English version](https://github.com/sftwnd/bip39-morse/blob/master/README.md)*
 
 Интерактивный TUI, который превращает фразу, набранную азбукой Морзе, в BIP39-мнемонику (и обратно), с подключаемыми Морзе-алфавитами по локалям.
 
@@ -22,11 +23,11 @@
 > [!CAUTION]
 > Ниже используется **ироха** — классическая хэйанская панграмма японской каны, общеизвестный публичный текст. Кошелёк, выведенный из неё, поэтому тоже публичен: любой, запустив ту же команду, получит ту же мнемонику. Это иллюстрация, **не** рецепт использования.
 
-<img src="docs/demo.svg" alt="Анимированное демо: forward-режим генерирует 12-словную BIP39-мнемонику из иросу, набранной как Морзе-энтропия">
+<img src="https://raw.githubusercontent.com/sftwnd/bip39-morse/master/docs/demo.svg" alt="Анимированное демо: forward-режим генерирует 12-словную BIP39-мнемонику из иросу, набранной как Морзе-энтропия">
 
 *Если SVG выше не анимируется в вашем просмотрщике — последний кадр как PNG:*
 
-<img src="docs/demo-final.png" alt="Финальное состояние: shell prompt, ироху эхом, BIP39-мнемоника">
+<img src="https://raw.githubusercontent.com/sftwnd/bip39-morse/master/docs/demo-final.png" alt="Финальное состояние: shell prompt, ироху эхом, BIP39-мнемоника">
 
 [Ироха](https://ru.wikipedia.org/wiki/%D0%98%D1%80%D0%BE%D1%85%D0%B0) (色は匂へど…) — буддийское стихотворение о непостоянстве IX–X вв. Его 47 слогов используют **каждый знак каны ровно по разу**, поэтому это одновременно знаменитая поэма *и* панграмма японской азбуки. Перевод:
 
@@ -46,9 +47,9 @@ bip39-morse --morse-table examples/japanese.txt --length 12 --ascii
 
 То же демо, но в режиме `--reverse`. 12 BIP39-слов из примера выше набираются с префикс-автодополнением (каждое слово коммитится, как только префикс становится уникальным), а инструмент декодирует получившиеся 128 бит энтропии обратно в Морзе-латиницу. Финальная распечатка отформатирована `--group-size 4 --per-line 4` — блоки по 4 символа, 4 блока в строке:
 
-<img src="docs/demo-reverse.svg" alt="Анимированное демо: reverse-режим декодирует мнемонику из иросу обратно в Морзе-текст, отформатированный блоками 4x4">
+<img src="https://raw.githubusercontent.com/sftwnd/bip39-morse/master/docs/demo-reverse.svg" alt="Анимированное демо: reverse-режим декодирует мнемонику из иросу обратно в Морзе-текст, отформатированный блоками 4x4">
 
-<img src="docs/demo-reverse-final.png" alt="Reverse финал: shell prompt, затем декодированный Морзе-текст блоками 4x4">
+<img src="https://raw.githubusercontent.com/sftwnd/bip39-morse/master/docs/demo-reverse-final.png" alt="Reverse финал: shell prompt, затем декодированный Морзе-текст блоками 4x4">
 
 Декодированный текст round-trip'ит через forward-режим: подав его обратно как Морзе-фразу, получите те же 128 бит энтропии и те же первые 11 слов мнемоники (стандартная BIP39-оговорка по поводу последнего слова с контрольной суммой). См. [round-trip self-check](#предупреждение-по-безопасности--прочитайте-до-того-как-сгенерируете-что-то-всерьёз) под предупреждением по безопасности.
 

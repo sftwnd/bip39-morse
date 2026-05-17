@@ -7,6 +7,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (pending Czech-contributor review)
+- `examples/czech.txt` — Czech accent extension under `locale: en`
+  implementing the **drop-diacritic** convention from Czech amateur
+  radio practice (cs.wikipedia.org/wiki/Morseova_abeceda), since
+  ITU-R M.1677-1 does not define codes for the 15 Czech-specific
+  diacritic letters. Each Czech letter (Á Č Ď É Ě Í Ň Ó Ř Š Ť Ú Ů Ý Ž)
+  maps to the same bit string as its base Latin letter; reverse-mode
+  decoding always picks the base Latin form. **Ships pending review by
+  a Czech-speaking contributor with access to an authoritative
+  national standard** — see issue #7 for the rationale. Closes #7
+  on confirmation.
+
+## [1.0.2] — 2026-05-17
+
+First release published to PyPI. Strictly a packaging / branding /
+infrastructure release — no runtime behaviour changes since 1.0.1.
+
+### Packaging
+- PyPI publishing infrastructure via OIDC trusted publishing (no
+  long-lived token in repo secrets). Two new workflows:
+  `.github/workflows/release-testpypi.yml` (manual `workflow_dispatch`
+  trigger, publishes to TestPyPI, sigstore attestations off because
+  TestPyPI's PEP 740 support is unreliable) and
+  `.github/workflows/release-pypi.yml` (triggers on
+  `release: published` from the Releases UI, publishes to production
+  PyPI with sigstore attestations on). Each workflow splits build from
+  publish so the upload step has no source checkout.
+- `pyproject.toml` brought up to PyPI-publication standard: adds
+  `authors`, `keywords`, twelve `classifiers` (Development Status 5,
+  License, supported Python versions 3.11–3.13, Topic :: Security ::
+  Cryptography, etc.), and `[project.urls]` (Homepage, Repository,
+  Issues, Changelog, Releases). Description rewritten to lead with
+  the **MorseKey** brand and the offline / deterministic / open-source
+  tagline.
+- `README.md` and `README.ru.md`: image references converted from
+  relative paths (`docs/logo.svg`, `docs/demo.svg`, etc.) to absolute
+  `raw.githubusercontent.com` URLs so the logo and demos render
+  correctly on the PyPI project page. Cross-link to the bilingual
+  README counterpart and the license badge link also converted to
+  absolute URLs. A PyPI version badge added next to the existing CI /
+  release / license / Python badges.
+- `docs/PUBLISHING.md` documents the one-time setup (PyPI accounts,
+  2FA, GitHub environments, pending-publishers) and the per-release
+  flow for both TestPyPI and production, including yank procedure and
+  sigstore verification example.
+
 ### Documentation
 - Branding: project now carries the name **MorseKey** at the top of
   the README (the canonical package / repo / CLI name `bip39-morse` is
@@ -19,18 +65,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `bip39-morse` aka note, a one-line tagline
   (*BIP39 seed phrases ⇄ Morse code · offline · deterministic · open-source*),
   and CI / release / license / Python-version shields.io badges.
-
-### Added (pending Czech-contributor review)
-- `examples/czech.txt` — Czech accent extension under `locale: en`
-  implementing the **drop-diacritic** convention from Czech amateur
-  radio practice (cs.wikipedia.org/wiki/Morseova_abeceda), since
-  ITU-R M.1677-1 does not define codes for the 15 Czech-specific
-  diacritic letters. Each Czech letter (Á Č Ď É Ě Í Ň Ó Ř Š Ť Ú Ů Ý Ž)
-  maps to the same bit string as its base Latin letter; reverse-mode
-  decoding always picks the base Latin form. **Ships pending review by
-  a Czech-speaking contributor with access to an authoritative
-  national standard** — see issue #7 for the rationale. Closes #7
-  on confirmation.
 
 ## [1.0.1] — 2026-05-16
 
@@ -149,6 +183,7 @@ First public release.
   phrase. README ships an explicit *Security warning* section about
   running this on a clean live OS for any real seed generation.
 
-[Unreleased]: https://github.com/sftwnd/bip39-morse/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/sftwnd/bip39-morse/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/sftwnd/bip39-morse/releases/tag/v1.0.2
 [1.0.1]: https://github.com/sftwnd/bip39-morse/releases/tag/v1.0.1
 [1.0.0]: https://github.com/sftwnd/bip39-morse/releases/tag/v1.0.0
