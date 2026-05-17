@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+- Branding: project now carries the name **MorseKey** at the top of
+  the README (the canonical package / repo / CLI name `bip39-morse` is
+  unchanged — `pip install bip39-morse`, `import bip39_morse`, and the
+  `bip39-morse` console script all continue to work). Adds
+  `docs/logo.svg` (square app icon, used in the README header) and
+  `docs/social.svg` / `docs/social.png` (1280×640 social-preview banner
+  for the GitHub repo card and link previews). README and README.ru
+  get an HTML header block: centred logo, MorseKey wordmark, the
+  `bip39-morse` aka note, a one-line tagline
+  (*BIP39 seed phrases ⇄ Morse code · offline · deterministic · open-source*),
+  and CI / release / license / Python-version shields.io badges.
+
 ## [1.0.1] — 2026-05-16
 
 ### Documentation
