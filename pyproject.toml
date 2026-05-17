@@ -5,13 +5,41 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "bip39-morse"
 version = "1.0.1"
-description = "Interactive TUI that converts a Morse-typed phrase into a BIP39 mnemonic (and back), with pluggable per-locale Morse alphabets"
+description = "MorseKey — type a phrase in Morse, get a BIP39 mnemonic. And back. Offline, deterministic, open-source."
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
+authors = [{name = "Andrey Shindarev", email = "sftwnd@gmail.com"}]
+keywords = [
+    "bip39", "morse", "morse-code", "mnemonic", "cryptocurrency",
+    "seed-phrase", "wallet", "cli", "tui",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Natural Language :: Russian",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Utilities",
+]
 dependencies = [
     "prompt_toolkit>=3.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/sftwnd/bip39-morse"
+Repository = "https://github.com/sftwnd/bip39-morse"
+Issues = "https://github.com/sftwnd/bip39-morse/issues"
+Changelog = "https://github.com/sftwnd/bip39-morse/blob/master/CHANGELOG.md"
+Releases = "https://github.com/sftwnd/bip39-morse/releases"
 
 [project.optional-dependencies]
 test = [
