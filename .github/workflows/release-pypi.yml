@@ -20,6 +20,14 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
+  # Manual fallback. The canonical trigger is the GitHub Release above —
+  # cut a release in the Releases UI and this workflow fires automatically.
+  # workflow_dispatch is here for recovery scenarios: republishing after a
+  # PyPI yank-and-bump-version, or re-firing if the release event was
+  # somehow missed. PyPI's per-version uniqueness still prevents accidental
+  # overwrites — you can't dispatch a 1.0.2 publish if 1.0.2 already lives
+  # on PyPI; bump pyproject.toml first.
+  workflow_dispatch:
 
 permissions:
   contents: read
