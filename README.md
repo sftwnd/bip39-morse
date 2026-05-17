@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo.svg" alt="MorseKey logo" width="140">
+  <img src="https://raw.githubusercontent.com/sftwnd/bip39-morse/master/docs/logo.svg" alt="MorseKey logo" width="140">
 </p>
 <h1 align="center">MorseKey</h1>
 <p align="center">
@@ -9,11 +9,12 @@
 <p align="center">
   <a href="https://github.com/sftwnd/bip39-morse/actions/workflows/tests.yml"><img alt="CI" src="https://github.com/sftwnd/bip39-morse/actions/workflows/tests.yml/badge.svg"></a>
   <a href="https://github.com/sftwnd/bip39-morse/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/sftwnd/bip39-morse"></a>
-  <a href="LICENSE.md"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg"></a>
+  <a href="https://pypi.org/project/bip39-morse/"><img alt="PyPI" src="https://img.shields.io/pypi/v/bip39-morse.svg"></a>
+  <a href="https://github.com/sftwnd/bip39-morse/blob/master/LICENSE.md"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg"></a>
   <img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11+-blue.svg">
 </p>
 
-*[Русская версия](README.ru.md)*
+*[Русская версия](https://github.com/sftwnd/bip39-morse/blob/master/README.ru.md)*
 
 Interactive TUI that converts a Morse-typed phrase into a BIP39 mnemonic (and back), with pluggable per-locale Morse alphabets.
 
@@ -22,11 +23,11 @@ Interactive TUI that converts a Morse-typed phrase into a BIP39 mnemonic (and ba
 > [!CAUTION]
 > The phrase below is the **iroha** — a classical Heian-era pangram of the kana, globally known public text. The wallet derived from it is therefore public too: anyone running the same command produces the same mnemonic. This is illustration, **not** a usage recipe.
 
-<img src="docs/demo.svg" alt="Animated terminal demo: forward-mode generation of a 12-word BIP39 mnemonic from the iroha typed as Morse entropy">
+<img src="https://raw.githubusercontent.com/sftwnd/bip39-morse/master/docs/demo.svg" alt="Animated terminal demo: forward-mode generation of a 12-word BIP39 mnemonic from the iroha typed as Morse entropy">
 
 *If the SVG above does not animate in your viewer, the final frame as PNG:*
 
-<img src="docs/demo-final.png" alt="Final state: shell prompt, iroha echoed, BIP39 mnemonic">
+<img src="https://raw.githubusercontent.com/sftwnd/bip39-morse/master/docs/demo-final.png" alt="Final state: shell prompt, iroha echoed, BIP39 mnemonic">
 
 The [iroha](https://en.wikipedia.org/wiki/Iroha) (色は匂へど…) is a 9th–10th c. Buddhist meditation on impermanence. Its 47 syllables use **each kana exactly once**, making it simultaneously a famous poem *and* a pangram of the syllabary. Approximate translation:
 
@@ -46,9 +47,9 @@ bip39-morse --morse-table examples/japanese.txt --length 12 --ascii
 
 Same demo run in `--reverse` mode. The 12 BIP39 words from above are typed in (prefix-autocomplete commits each word as soon as it's unique), and the tool decodes the resulting 128 entropy bits back into Morse-shaped Latin text. The final print is formatted as `--group-size 4 --per-line 4`, i.e. blocks of 4 characters, 4 blocks per row:
 
-<img src="docs/demo-reverse.svg" alt="Animated terminal demo: reverse-mode decoding of the iroha-derived mnemonic into Morse text, formatted as 4x4 blocks">
+<img src="https://raw.githubusercontent.com/sftwnd/bip39-morse/master/docs/demo-reverse.svg" alt="Animated terminal demo: reverse-mode decoding of the iroha-derived mnemonic into Morse text, formatted as 4x4 blocks">
 
-<img src="docs/demo-reverse-final.png" alt="Reverse final state: shell prompt, then the decoded Morse text in 4x4 blocks">
+<img src="https://raw.githubusercontent.com/sftwnd/bip39-morse/master/docs/demo-reverse-final.png" alt="Reverse final state: shell prompt, then the decoded Morse text in 4x4 blocks">
 
 The decoded text round-trips through forward mode: feeding it back as a Morse phrase reproduces the same 128 entropy bits, hence the same first 11 mnemonic words (BIP39's last-word-checksum behaviour is the usual caveat). See the [round-trip self-check](#security-warning--read-this-before-generating-anything-real) under the security warning.
 

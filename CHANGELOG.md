@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Packaging
+- PyPI publishing infrastructure via OIDC trusted publishing (no
+  long-lived token in repo secrets). Two new workflows:
+  `.github/workflows/release-testpypi.yml` (manual `workflow_dispatch`
+  trigger, publishes to TestPyPI, sigstore attestations off because
+  TestPyPI's PEP 740 support is unreliable) and
+  `.github/workflows/release-pypi.yml` (triggers on
+  `release: published` from the Releases UI, publishes to production
+  PyPI with sigstore attestations on). Each workflow splits build from
+  publish so the upload step has no source checkout.
+- `pyproject.toml` brought up to PyPI-publication standard: adds
+  `authors`, `keywords`, twelve `classifiers` (Development Status 5,
+  License, supported Python versions 3.11–3.13, Topic :: Security ::
+  Cryptography, etc.), and `[project.urls]` (Homepage, Repository,
+  Issues, Changelog, Releases). Description rewritten to lead with
+  the **MorseKey** brand and the offline / deterministic / open-source
+  tagline.
+- `README.md` and `README.ru.md`: image references converted from
+  relative paths (`docs/logo.svg`, `docs/demo.svg`, etc.) to absolute
+  `raw.githubusercontent.com` URLs so the logo and demos render
+  correctly on the PyPI project page. Cross-link to the bilingual
+  README counterpart and the license badge link also converted to
+  absolute URLs. A PyPI version badge added next to the existing CI /
+  release / license / Python badges.
+- `docs/PUBLISHING.md` documents the one-time setup (PyPI accounts,
+  2FA, GitHub environments, pending-publishers) and the per-release
+  flow for both TestPyPI and production, including yank procedure and
+  sigstore verification example.
+
 ### Documentation
 - Branding: project now carries the name **MorseKey** at the top of
   the README (the canonical package / repo / CLI name `bip39-morse` is
