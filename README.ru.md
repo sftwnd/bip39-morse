@@ -1,4 +1,17 @@
-# bip39-morse
+<p align="center">
+  <img src="docs/logo.svg" alt="Логотип MorseKey" width="140">
+</p>
+<h1 align="center">MorseKey</h1>
+<p align="center">
+  <sub>также известен как <code>bip39-morse</code> (имя пакета / репозитория / CLI)</sub><br>
+  <em>BIP39 seed-фразы ⇄ код Морзе · оффлайн · детерминирован · open-source</em>
+</p>
+<p align="center">
+  <a href="https://github.com/sftwnd/bip39-morse/actions/workflows/tests.yml"><img alt="CI" src="https://github.com/sftwnd/bip39-morse/actions/workflows/tests.yml/badge.svg"></a>
+  <a href="https://github.com/sftwnd/bip39-morse/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/sftwnd/bip39-morse"></a>
+  <a href="LICENSE.md"><img alt="Лицензия: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg"></a>
+  <img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11+-blue.svg">
+</p>
 
 *[English version](README.md)*
 
