@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+- README: new *Why Morse code?* section explaining the rationale for
+  using Morse as the entropy bridge — bit-level isomorphism with `.` /
+  `-`, paper-auditable ITU-R M.1677-1 table, exact round-trip via the
+  `E` / `T` single-bit codes, memorable-phrase tradeoffs with the
+  explicit entropy-quality caveat, and locale-pluggable design. Placed
+  between *Security warning* and *How it works* so rationale precedes
+  the mechanical description. Mirrored in `README.ru.md`. Closes #23.
+
 ## [1.0.3] — 2026-05-20
 
 Locale-aware encoding + ASCII-fold + parity infrastructure for the
