@@ -18,6 +18,13 @@ CYRILLIC = {
     'ф': '..-.', 'х': '....', 'ц': '-.-.',  'ч': '---.',  'ш': '----',
     'щ': '--.-', 'ъ': '--.--', 'ы': '-.--', 'ь': '-..-', 'э': '..-..',
     'ю': '..--', 'я': '.-.-', 'ё': '.',
+    # Soviet Russian punctuation. These differ from the international
+    # ITU-R PUNCTUATION used as universal fallback. Visible via
+    # `char_to_bits(ch, locale='ru')` and matched in reverse decoding
+    # under `bits_to_text(bits, 'ru')` because locale_table('ru')
+    # picks them up from CYRILLIC.
+    '.': '......',   # Soviet '.' = 6 dots (ITU-R '.' is .-.-.-)
+    ',': '.-.-.-',   # Soviet ',' = .-.-.- (ITU-R ',' is --..--)
 }
 
 DIGITS = {
@@ -196,29 +203,53 @@ def _ascii_fold(ch: str) -> str | None:
     return None
 
 
-def char_to_bits(ch: str, fold_diacritics: bool = False) -> str:
+def char_to_bits(
+    ch: str,
+    locale: str | None = None,
+    fold_diacritics: bool = False,
+) -> str:
     """Convert a single character to a morse bit string ('.' → '0', '-' → '1').
     Returns empty string for space (word separator).
 
+    When ``locale`` is given, the character is looked up in that locale's
+    layer **first** (e.g. Soviet `.` = `......` under `'ru'` instead of the
+    universal `.-.-.-` from PUNCTUATION). Fall-through is the same as
+    locale-agnostic mode: merged ``forward_table()`` → ``DIGITS`` →
+    ``PUNCTUATION``. ``locale=None`` (default) keeps the original
+    locale-agnostic behavior for back-compat.
+
     When ``fold_diacritics=True`` (default ``False`` for back-compat), if the
-    character has no direct Morse code in any loaded layer / DIGITS /
-    PUNCTUATION, attempt an ASCII fold (strip combining marks; require
-    single-char ASCII result) and retry. Useful for users typing Latin
-    text with native diacritics whose target wordlist is ASCII (most
-    BIP39 wordlists are).
+    character has no direct Morse code anywhere, attempt an ASCII fold
+    (strip combining marks; require single-char ASCII result) and retry.
     """
     if ch == ' ':
         return ''
     lower = ch.lower()
-    morse = (
-        forward_table().get(lower)
-        or DIGITS.get(ch)
-        or PUNCTUATION.get(ch)
-    )
+    morse: str | None = None
+    if locale is not None:
+        # Locale-specific layer takes precedence (e.g. Soviet `.` under
+        # `'ru'` wins over universal ITU-R `.-.-.-`).
+        try:
+            morse = locale_table(locale).get(lower)
+        except KeyError:
+            # Unknown locale — silently fall back to global resolution.
+            morse = None
+    if morse is None:
+        # Without locale (or locale didn't match): DIGITS / PUNCTUATION
+        # take precedence over the merged forward_table. This preserves
+        # backward-compat after we added Soviet `.` and `,` to CYRILLIC —
+        # callers without `locale` still get the international ITU-R
+        # codes for punctuation. Letters and accent extensions are not
+        # affected (they're not in DIGITS/PUNCTUATION).
+        morse = (
+            DIGITS.get(ch)
+            or PUNCTUATION.get(ch)
+            or forward_table().get(lower)
+        )
     if morse is None and fold_diacritics:
         folded = _ascii_fold(ch)
         if folded is not None and folded != ch:
-            return char_to_bits(folded, fold_diacritics=False)
+            return char_to_bits(folded, locale=locale, fold_diacritics=False)
     if morse is None:
         raise ValueError(f'Unknown character: {ch!r}')
     return _to_bits(morse)

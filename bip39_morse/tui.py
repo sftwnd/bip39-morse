@@ -93,7 +93,7 @@ def _clip_hex(hex_str: str, max_width: int) -> str:
     return '…' + hex_str[-(max_width - 1):]
 
 
-def run_tui(entropy_bits: int, wordlist: list[str], use_ascii: bool = False, fold_diacritics: bool = False) -> tuple[str, str] | None:
+def run_tui(entropy_bits: int, wordlist: list[str], use_ascii: bool = False, fold_diacritics: bool = False, input_locale: str | None = None) -> tuple[str, str] | None:
     stream = BitStream(entropy_bits=entropy_bits)
     result_holder: list[tuple[str, str]] = []
     hint_holder: list[str] = ['']
@@ -127,7 +127,7 @@ def run_tui(entropy_bits: int, wordlist: list[str], use_ascii: bool = False, fol
         @kb.add(ch)
         def _handler(event):
             hint_holder[0] = ''
-            bits = char_to_bits(ch, fold_diacritics=fold_diacritics)
+            bits = char_to_bits(ch, locale=input_locale, fold_diacritics=fold_diacritics)
             stream.push(ch, bits)
             event.app.invalidate()
 
@@ -140,7 +140,11 @@ def run_tui(entropy_bits: int, wordlist: list[str], use_ascii: bool = False, fol
         skipped = 0
         for ch in event.data:
             if ch in allowed:
-                stream.push(ch, char_to_bits(ch, fold_diacritics=fold_diacritics) if ch != ' ' else '')
+                stream.push(
+                    ch,
+                    char_to_bits(ch, locale=input_locale, fold_diacritics=fold_diacritics)
+                    if ch != ' ' else '',
+                )
             else:
                 skipped += 1
         hint_holder[0] = f'пропущено {skipped} символ(а)' if skipped else ''
