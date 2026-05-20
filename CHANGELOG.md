@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `PUNCTUATION` map в `bip39_morse.morse` расширена до 10 знаков:
+  - ITU-R M.1677-1 §1.1.3: `.`, `,`, `-`, `?`, `:`.
+  - American Morse extensions (default-on): `!`, `_`, `$`, `&`, `;` —
+    стандартизированы не в ITU-R а в американской радиопрактике.
+  Раньше включался только `!` без явной маркировки. Парирует
+  `american_extensions.txt` в iOS-проекте (там opt-in флагом).
+
 ## [1.0.2] — 2026-05-17
 
 First release published to PyPI. Strictly a packaging / branding /
