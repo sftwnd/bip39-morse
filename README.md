@@ -71,6 +71,18 @@ Generating a real BIP39 phrase on a general-purpose computer is **inherently ris
   If the hex in steps 1 and 3 does not match exactly, **do not use the mnemonic** — something in the environment is interfering with the tool.
 - **Wipe traces.** After verification, shut down the live OS cleanly so swap and tmpfs are gone with it. Do not screenshot the TUI, do not paste anything into a chat or a note-taking app, and remember that anything you typed may still be in scrollback until the terminal process exits.
 
+## Why Morse code?
+
+Morse is an unusual choice for an entropy source — and a deliberate one. Five properties make it a clean fit as the bridge between a memorable phrase and BIP39 entropy:
+
+- **It's already a binary code.** `.` / `-` map 1:1 to bits. There's no hash, no KDF, no stretching between the typed phrase and the BIP39 entropy — the relationship is mechanical and visible by eye, not hidden behind a one-way function. The contribution of a single character can be verified with a textbook in hand.
+- **Auditable on paper.** ITU-R M.1677-1 is a public standard, stable for roughly a century, whose encoding table fits on one page. Anyone can reproduce the bit string of a phrase without trusting this tool, and the table will not silently change underneath the user. Ad-hoc per-project encodings do not have this property.
+- **Exact round-trip.** In the built-in alphabets `E` / `Е` cover bit `0` and `T` / `Т` cover bit `1`, so every bit string decodes back into letters with no padding. Forward ⇄ reverse is a genuine bijection on bits — that's what makes the [self-check](#security-warning--read-this-before-generating-anything-real) above meaningful: if the tool tampered with anything, the hex on step 3 would diverge.
+- **Memorable phrase, not an opaque blob.** Humans have memorised Morse phrases for over 150 years. *A phrase you can recall* + *a public table* = reproducible offline entropy without depending on a particular machine's RNG or a clean physical dice setup. The obvious caveat: entropy quality is the user's responsibility. A famous quote (like the demo's *iroha*) has effectively zero entropy. This tool *transforms* randomness — it does not *measure* it and does not *generate* it.
+- **Language-agnostic by design.** Any alphabet with a published Morse mapping — Latin, Cyrillic, Greek, kana, and the locale extensions documented [below](#custom-morse-tables) — plugs in via `--morse-table`. Users type in their native script; the bit-level math is unchanged. This is a direct consequence of the first property: bit-equivalent characters across locales are only possible because the encoding is itself a bit string.
+
+What about the obvious alternatives? `SHA-256(phrase)` hides the input/output relationship and is not paper-auditable. ASCII bit-packing leaks alphabet structure straight into the entropy. Dice rolls require a trusted physical environment. OS entropy is not reproducible from memory. Morse sits at a deliberately different point in the design space — deterministic, memorable, paper-verifiable, locale-pluggable — and pays for it by putting the entropy-quality budget on the human at the keyboard.
+
 ## How it works
 
 The script is a bridge between two representations of the same entropy:
