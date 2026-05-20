@@ -169,3 +169,49 @@ def test_bits_to_text_least_used_short_string():
     #   pos 7: E unused, H,S used, I unused → wait remaining is 1 bit only
     #          so only E qualifies → pick E
     assert bits_to_text('0' * 8) == 'HSE'
+
+
+# ASCII-fold tests (--fold-diacritics)
+
+@pytest.mark.parametrize('diacritic,base', [
+    ('é', 'e'), ('è', 'e'), ('ê', 'e'), ('ë', 'e'),
+    ('á', 'a'), ('à', 'a'), ('â', 'a'), ('ä', 'a'), ('ã', 'a'),
+    ('í', 'i'), ('ñ', 'n'), ('ó', 'o'), ('ö', 'o'),
+    ('ú', 'u'), ('ü', 'u'), ('ý', 'y'), ('š', 's'), ('č', 'c'),
+    ('ř', 'r'), ('ž', 'z'), ('ñ', 'n'),
+])
+def test_fold_diacritics_resolves_to_base_letter(diacritic, base):
+    """char_to_bits(ch, fold_diacritics=True) для буквы с диакритикой
+    должен совпасть с char_to_bits(base_letter)."""
+    assert char_to_bits(diacritic, fold_diacritics=True) == char_to_bits(base)
+
+
+def test_fold_diacritics_default_off_still_raises():
+    """Default fold_diacritics=False — backward-compat, ValueError для неизвестного."""
+    with pytest.raises(ValueError, match='Unknown character'):
+        char_to_bits('é')
+
+
+def test_fold_diacritics_known_char_takes_direct_path():
+    """Если буква уже есть в registry (например 'a' из LATIN), fold не задействуется."""
+    assert char_to_bits('a', fold_diacritics=True) == '01'  # ITU 'a' = .-
+
+
+def test_fold_diacritics_multichar_fold_raises():
+    """ß раскладывается NFKD в 'ss' — multi-char, fold не помогает, ValueError."""
+    with pytest.raises(ValueError, match='Unknown character'):
+        char_to_bits('ß', fold_diacritics=True)
+
+
+def test_fold_diacritics_non_latin_raises():
+    """Иероглиф или арабская буква не fold'ятся в ASCII — ValueError."""
+    with pytest.raises(ValueError):
+        char_to_bits('中', fold_diacritics=True)
+    with pytest.raises(ValueError):
+        char_to_bits('ا', fold_diacritics=True)
+
+
+def test_fold_diacritics_uppercase():
+    """Заглавные диакритики тоже fold'ятся."""
+    assert char_to_bits('É', fold_diacritics=True) == char_to_bits('e')
+    assert char_to_bits('Š', fold_diacritics=True) == char_to_bits('s')
