@@ -7,13 +7,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] — 2026-05-20
+
+Locale-aware encoding + ASCII-fold + parity infrastructure for the
+[iOS port](https://github.com/sftwnd/bip39-morse-ios). No breaking
+changes for callers that don't pass new optional parameters.
+
 ### Added
-- `PUNCTUATION` map в `bip39_morse.morse` расширена до 10 знаков:
+- `PUNCTUATION` map расширена до 10 знаков (#25):
   - ITU-R M.1677-1 §1.1.3: `.`, `,`, `-`, `?`, `:`.
   - American Morse extensions (default-on): `!`, `_`, `$`, `&`, `;` —
     стандартизированы не в ITU-R а в американской радиопрактике.
-  Раньше включался только `!` без явной маркировки. Парирует
-  `american_extensions.txt` в iOS-проекте (там opt-in флагом).
+    Раньше включался только `!` без явной маркировки. Зеркало
+    `american_extensions.txt` в iOS-проекте (там opt-in флагом).
+- `char_to_bits(ch, fold_diacritics=True)` — ASCII-fold через NFKD +
+  strip combining marks для символов отсутствующих в Morse-таблицах
+  (`é → e`, `š → s`, `ñ → n`, `ÿ → y`). Multi-char folds (`ß → ss`) и
+  non-Latin (`中`, `ا`) остаются raise. CLI: `--fold-diacritics`. TUI:
+  `allowed_chars(fold_diacritics=True)` расширяет keystroke whitelist
+  до общего набора латинских диакритик чьи base-формы есть в реестре.
+  (#27)
+- `char_to_bits(ch, locale=...)` — locale-aware encoding. При заданной
+  локали поиск идёт сначала в её layer-table — это позволяет ru-локали
+  иметь свою советскую пунктуацию без конфликта с международными
+  кодами под другими локалями. CLI: `--input-locale LOCALE`. TUI:
+  `input_locale` параметр пробрасывается в keystroke handler. (#29)
+- Soviet `.` (`......`) и `,` (`.-.-.-`) добавлены в `CYRILLIC` —
+  доступны через `char_to_bits(ch, locale='ru')`. Зеркало
+  `russian.txt` в iOS-проекте. (#29)
+- Cross-language Morse parity infrastructure (#30):
+  - `tests/generate_morse_parity_vectors.py` — генератор 178 vectors
+    `(input_char, locale, fold) → expected_bits`, покрывающих все
+    built-in алфавиты, диакритические extensions, советскую
+    пунктуацию, fold cases и edge errors.
+  - `tests/vectors/morse_parity_vectors.json` — generated fixture.
+  - `tests/test_parity_vectors.py` — self-consistency check (если
+    `morse.py` меняется без regen JSON — тест падает с указанием
+    как пересобрать).
+  - Тот же JSON consumed iOS-портом в
+    `MorseKeyTests/MorseParityVectorsTests.swift` —
+    cross-language conformance проверяется в CI обеих сторон.
+
+### Changed
+- **`char_to_bits` lookup order при `locale=None`**: `DIGITS >
+  PUNCTUATION > forward_table()` (вместо прежнего `forward_table >
+  DIGITS > PUNCTUATION`). Это сохраняет международные ITU-R коды для
+  `.` и `,` после добавления советских в `CYRILLIC` — без передачи
+  `locale` поведение для пунктуации не меняется. Буквы/цифры/акценты
+  не затронуты (они не в `DIGITS`/`PUNCTUATION`). (#29)
+
+### Tests
+- 360 tests pass (was 320 in 1.0.2), 100% coverage maintained.
+- New: punctuation extensions, ASCII-fold (parametric +
+  multi-char/non-Latin edge cases), locale-aware encoding (Soviet vs
+  international, fallback paths, round-trip), parity-vectors
+  self-consistency.
 
 ## [1.0.2] — 2026-05-17
 
