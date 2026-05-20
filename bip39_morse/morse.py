@@ -33,12 +33,25 @@ DIGITS = {
 }
 
 PUNCTUATION = {
+    # ITU-R M.1677-1 §1.1.3 — international standard.
     '.': '.-.-.-',
     ',': '--..--',
     '-': '-....-',
-    '!': '-.-.--',
     '?': '..--..',
     ':': '---...',
+    # American Morse extensions — non-ITU-R but widely used in American
+    # radiotelegraph practice. Included by default; if you need strict
+    # ITU-R behaviour, fork or wrap PUNCTUATION manually.
+    #   `!`     — long-standing American convention (no ITU-R code).
+    #   `_ $`   — American only, no ITU-R counterparts.
+    #   `&`     — code `.-...` is the ITU-R "Wait" prosign; American
+    #              usage re-binds it to the ampersand glyph.
+    #   `;`     — `-.-.-.` is not defined in ITU-R; American convention.
+    '!': '-.-.--',
+    '_': '..--.-',
+    '$': '...-..-',
+    '&': '.-...',
+    ';': '-.-.-.',
 }
 
 
