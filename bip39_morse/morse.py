@@ -1,4 +1,5 @@
 import re
+import unicodedata
 
 LATIN = {
     'a': '.-',   'b': '-...', 'c': '-.-.', 'd': '-..', 'e': '.',
@@ -177,9 +178,35 @@ def _to_bits(morse: str) -> str:
     return morse.replace('.', '0').replace('-', '1')
 
 
-def char_to_bits(ch: str) -> str:
+def _ascii_fold(ch: str) -> str | None:
+    """Strip Unicode combining marks via NFKD and return the result if it
+    collapses to a single printable ASCII character. Returns None if the
+    fold doesn't yield a single-char ASCII base.
+
+    Examples:
+      'é' → 'e', 'š' → 's', 'ñ' → 'n'   (single-char ASCII bases)
+      'ß' → 'ss' (NFKD)                 → None (multi-char)
+      '中' (CJK)                         → None (not ASCII)
+      'A' (already ASCII)               → 'A'
+    """
+    decomposed = unicodedata.normalize('NFKD', ch)
+    base = ''.join(c for c in decomposed if not unicodedata.combining(c))
+    if len(base) == 1 and base.isascii() and base.isprintable():
+        return base
+    return None
+
+
+def char_to_bits(ch: str, fold_diacritics: bool = False) -> str:
     """Convert a single character to a morse bit string ('.' → '0', '-' → '1').
-    Returns empty string for space (word separator)."""
+    Returns empty string for space (word separator).
+
+    When ``fold_diacritics=True`` (default ``False`` for back-compat), if the
+    character has no direct Morse code in any loaded layer / DIGITS /
+    PUNCTUATION, attempt an ASCII fold (strip combining marks; require
+    single-char ASCII result) and retry. Useful for users typing Latin
+    text with native diacritics whose target wordlist is ASCII (most
+    BIP39 wordlists are).
+    """
     if ch == ' ':
         return ''
     lower = ch.lower()
@@ -188,6 +215,10 @@ def char_to_bits(ch: str) -> str:
         or DIGITS.get(ch)
         or PUNCTUATION.get(ch)
     )
+    if morse is None and fold_diacritics:
+        folded = _ascii_fold(ch)
+        if folded is not None and folded != ch:
+            return char_to_bits(folded, fold_diacritics=False)
     if morse is None:
         raise ValueError(f'Unknown character: {ch!r}')
     return _to_bits(morse)

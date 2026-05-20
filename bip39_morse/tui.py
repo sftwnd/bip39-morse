@@ -10,21 +10,44 @@ from prompt_toolkit.formatted_text import StyleAndTextTuples
 from prompt_toolkit.styles import Style
 from prompt_toolkit.output import create_output
 
-from .morse import char_to_bits, forward_table, DIGITS, PUNCTUATION
+from .morse import char_to_bits, forward_table, DIGITS, PUNCTUATION, _ascii_fold
 from .bitstream import BitStream
 
 
-def allowed_chars() -> set[str]:
+_COMMON_DIACRITICS = (
+    # Latin-1 supplement + Latin Extended-A covering most European
+    # languages with diacritics. Used only when fold_diacritics=True
+    # to expand the keystroke whitelist.
+    'áàâäãåāăąæçćčďèéêëēĕęğħıíìîïīĭįĺľłńñňōŏőøœŕřśšşťțúùûüūŭůűųýŷÿźżž'
+    'ÁÀÂÄÃÅĀĂĄÆÇĆČĎÈÉÊËĒĔĘĞĦÍÌÎÏĪĬĮĹĽŁŃÑŇŌŎŐØŒŔŘŚŠŞŤȚÚÙÛÜŪŬŮŰŲÝŶŸŹŻŽ'
+)
+
+
+def allowed_chars(fold_diacritics: bool = False) -> set[str]:
     """Set of accepted keystrokes: every char in the merged forward table
-    (both cases) plus digits, punctuation, and space."""
+    (both cases) plus digits, punctuation, and space. When ``fold_diacritics``,
+    additionally accept any common Latin diacritic whose ASCII fold is in
+    the merged table — the keystroke handler will fold it on the fly via
+    ``char_to_bits(ch, fold_diacritics=True)``."""
     letters = forward_table()
-    return (
+    base: set[str] = (
         set(letters.keys())
         | set(k.upper() for k in letters.keys())
         | set(DIGITS.keys())
         | set(PUNCTUATION.keys())
         | {' '}
     )
+    if not fold_diacritics:
+        return base
+    for ch in _COMMON_DIACRITICS:
+        if ch in base:
+            continue
+        folded = _ascii_fold(ch)
+        if folded is None:
+            continue
+        if folded.lower() in letters or folded in DIGITS or folded in PUNCTUATION:
+            base.add(ch)
+    return base
 
 
 def _make_indicator(ready: bool, use_ascii: bool) -> StyleAndTextTuples:
@@ -70,7 +93,7 @@ def _clip_hex(hex_str: str, max_width: int) -> str:
     return '…' + hex_str[-(max_width - 1):]
 
 
-def run_tui(entropy_bits: int, wordlist: list[str], use_ascii: bool = False) -> tuple[str, str] | None:
+def run_tui(entropy_bits: int, wordlist: list[str], use_ascii: bool = False, fold_diacritics: bool = False) -> tuple[str, str] | None:
     stream = BitStream(entropy_bits=entropy_bits)
     result_holder: list[tuple[str, str]] = []
     hint_holder: list[str] = ['']
@@ -104,11 +127,11 @@ def run_tui(entropy_bits: int, wordlist: list[str], use_ascii: bool = False) -> 
         @kb.add(ch)
         def _handler(event):
             hint_holder[0] = ''
-            bits = char_to_bits(ch)
+            bits = char_to_bits(ch, fold_diacritics=fold_diacritics)
             stream.push(ch, bits)
             event.app.invalidate()
 
-    allowed = allowed_chars()
+    allowed = allowed_chars(fold_diacritics=fold_diacritics)
     for ch in allowed:
         _make_char_handler(ch)
 
@@ -117,7 +140,7 @@ def run_tui(entropy_bits: int, wordlist: list[str], use_ascii: bool = False) -> 
         skipped = 0
         for ch in event.data:
             if ch in allowed:
-                stream.push(ch, char_to_bits(ch) if ch != ' ' else '')
+                stream.push(ch, char_to_bits(ch, fold_diacritics=fold_diacritics) if ch != ' ' else '')
             else:
                 skipped += 1
         hint_holder[0] = f'пропущено {skipped} символ(а)' if skipped else ''

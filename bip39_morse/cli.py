@@ -82,6 +82,15 @@ def main():
         action='store_true',
         help='Use ANSI-colored ASCII bullet instead of emoji indicators',
     )
+    parser.add_argument(
+        '--fold-diacritics',
+        action='store_true',
+        help='Forward mode: when a typed character has no Morse code in any '
+             'loaded layer, attempt an ASCII fold (é → e, š → s, ñ → n) and '
+             'retry the lookup. Useful when typing Latin text with native '
+             'diacritics whose target wordlist is ASCII (most BIP39 are). '
+             'Multi-char folds (ß → ss) are left to fail under strict mode.',
+    )
 
     args = parser.parse_args()
 
@@ -125,7 +134,12 @@ def main():
             print(format_grouped(text, group_size=args.group_size, per_line=args.per_line))
         return
 
-    result = run_tui(entropy_bits=entropy_bits, wordlist=wordlist, use_ascii=args.ascii)
+    result = run_tui(
+        entropy_bits=entropy_bits,
+        wordlist=wordlist,
+        use_ascii=args.ascii,
+        fold_diacritics=args.fold_diacritics,
+    )
     if result is not None:
         normalized, mnemonic = result
         print(normalized)
