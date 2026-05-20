@@ -1,0 +1,1441 @@
+{
+  "version": 1,
+  "description": "Cross-language Morse encode parity vectors. Each vector: input character + optional locale + fold_diacritics flag. expected_bits is the bit string Python produces; iOS should produce identical output for the same input. expected_error is non-null when char_to_bits is expected to raise.",
+  "generator": "bip39-morse/tests/generate_morse_parity_vectors.py",
+  "reset_tables": true,
+  "preloaded_tables": [
+    "french.txt",
+    "german.txt",
+    "greek.txt",
+    "japanese.txt",
+    "polish.txt",
+    "spanish.txt"
+  ],
+  "count": 178,
+  "vectors": [
+    {
+      "input": "a",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "01",
+      "expected_error": null
+    },
+    {
+      "input": "A",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "01",
+      "expected_error": null
+    },
+    {
+      "input": "b",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "1000",
+      "expected_error": null
+    },
+    {
+      "input": "B",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "1000",
+      "expected_error": null
+    },
+    {
+      "input": "c",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "1010",
+      "expected_error": null
+    },
+    {
+      "input": "C",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "1010",
+      "expected_error": null
+    },
+    {
+      "input": "d",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "100",
+      "expected_error": null
+    },
+    {
+      "input": "D",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "100",
+      "expected_error": null
+    },
+    {
+      "input": "e",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "0",
+      "expected_error": null
+    },
+    {
+      "input": "E",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "0",
+      "expected_error": null
+    },
+    {
+      "input": "f",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "0010",
+      "expected_error": null
+    },
+    {
+      "input": "F",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "0010",
+      "expected_error": null
+    },
+    {
+      "input": "g",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "110",
+      "expected_error": null
+    },
+    {
+      "input": "G",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "110",
+      "expected_error": null
+    },
+    {
+      "input": "h",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "0000",
+      "expected_error": null
+    },
+    {
+      "input": "H",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "0000",
+      "expected_error": null
+    },
+    {
+      "input": "i",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "00",
+      "expected_error": null
+    },
+    {
+      "input": "I",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "00",
+      "expected_error": null
+    },
+    {
+      "input": "j",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "0111",
+      "expected_error": null
+    },
+    {
+      "input": "J",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "0111",
+      "expected_error": null
+    },
+    {
+      "input": "k",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "101",
+      "expected_error": null
+    },
+    {
+      "input": "K",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "101",
+      "expected_error": null
+    },
+    {
+      "input": "l",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "0100",
+      "expected_error": null
+    },
+    {
+      "input": "L",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "0100",
+      "expected_error": null
+    },
+    {
+      "input": "m",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "11",
+      "expected_error": null
+    },
+    {
+      "input": "M",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "11",
+      "expected_error": null
+    },
+    {
+      "input": "n",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "10",
+      "expected_error": null
+    },
+    {
+      "input": "N",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "10",
+      "expected_error": null
+    },
+    {
+      "input": "o",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "111",
+      "expected_error": null
+    },
+    {
+      "input": "O",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "111",
+      "expected_error": null
+    },
+    {
+      "input": "p",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "0110",
+      "expected_error": null
+    },
+    {
+      "input": "P",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "0110",
+      "expected_error": null
+    },
+    {
+      "input": "q",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "1101",
+      "expected_error": null
+    },
+    {
+      "input": "Q",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "1101",
+      "expected_error": null
+    },
+    {
+      "input": "r",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "010",
+      "expected_error": null
+    },
+    {
+      "input": "R",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "010",
+      "expected_error": null
+    },
+    {
+      "input": "s",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "000",
+      "expected_error": null
+    },
+    {
+      "input": "S",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "000",
+      "expected_error": null
+    },
+    {
+      "input": "t",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "1",
+      "expected_error": null
+    },
+    {
+      "input": "T",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "1",
+      "expected_error": null
+    },
+    {
+      "input": "u",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "001",
+      "expected_error": null
+    },
+    {
+      "input": "U",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "001",
+      "expected_error": null
+    },
+    {
+      "input": "v",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "0001",
+      "expected_error": null
+    },
+    {
+      "input": "V",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "0001",
+      "expected_error": null
+    },
+    {
+      "input": "w",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "011",
+      "expected_error": null
+    },
+    {
+      "input": "W",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "011",
+      "expected_error": null
+    },
+    {
+      "input": "x",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "1001",
+      "expected_error": null
+    },
+    {
+      "input": "X",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "1001",
+      "expected_error": null
+    },
+    {
+      "input": "y",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "1011",
+      "expected_error": null
+    },
+    {
+      "input": "Y",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "1011",
+      "expected_error": null
+    },
+    {
+      "input": "z",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter",
+      "expected_bits": "1100",
+      "expected_error": null
+    },
+    {
+      "input": "Z",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "en latin letter (uppercase)",
+      "expected_bits": "1100",
+      "expected_error": null
+    },
+    {
+      "input": "0",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "digit",
+      "expected_bits": "11111",
+      "expected_error": null
+    },
+    {
+      "input": "1",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "digit",
+      "expected_bits": "01111",
+      "expected_error": null
+    },
+    {
+      "input": "2",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "digit",
+      "expected_bits": "00111",
+      "expected_error": null
+    },
+    {
+      "input": "3",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "digit",
+      "expected_bits": "00011",
+      "expected_error": null
+    },
+    {
+      "input": "4",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "digit",
+      "expected_bits": "00001",
+      "expected_error": null
+    },
+    {
+      "input": "5",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "digit",
+      "expected_bits": "00000",
+      "expected_error": null
+    },
+    {
+      "input": "6",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "digit",
+      "expected_bits": "10000",
+      "expected_error": null
+    },
+    {
+      "input": "7",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "digit",
+      "expected_bits": "11000",
+      "expected_error": null
+    },
+    {
+      "input": "8",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "digit",
+      "expected_bits": "11100",
+      "expected_error": null
+    },
+    {
+      "input": "9",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "digit",
+      "expected_bits": "11110",
+      "expected_error": null
+    },
+    {
+      "input": ".",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ITU-R punctuation (no locale)",
+      "expected_bits": "010101",
+      "expected_error": null
+    },
+    {
+      "input": ",",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ITU-R punctuation (no locale)",
+      "expected_bits": "110011",
+      "expected_error": null
+    },
+    {
+      "input": "-",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ITU-R punctuation (no locale)",
+      "expected_bits": "100001",
+      "expected_error": null
+    },
+    {
+      "input": "?",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ITU-R punctuation (no locale)",
+      "expected_bits": "001100",
+      "expected_error": null
+    },
+    {
+      "input": ":",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ITU-R punctuation (no locale)",
+      "expected_bits": "111000",
+      "expected_error": null
+    },
+    {
+      "input": "!",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "American extension (default-on)",
+      "expected_bits": "101011",
+      "expected_error": null
+    },
+    {
+      "input": "_",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "American extension (default-on)",
+      "expected_bits": "001101",
+      "expected_error": null
+    },
+    {
+      "input": "$",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "American extension (default-on)",
+      "expected_bits": "0001001",
+      "expected_error": null
+    },
+    {
+      "input": "&",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "American extension (default-on)",
+      "expected_bits": "01000",
+      "expected_error": null
+    },
+    {
+      "input": ";",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "American extension (default-on)",
+      "expected_bits": "101010",
+      "expected_error": null
+    },
+    {
+      "input": "а",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "01",
+      "expected_error": null
+    },
+    {
+      "input": "б",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "1000",
+      "expected_error": null
+    },
+    {
+      "input": "в",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "011",
+      "expected_error": null
+    },
+    {
+      "input": "г",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "110",
+      "expected_error": null
+    },
+    {
+      "input": "д",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "100",
+      "expected_error": null
+    },
+    {
+      "input": "е",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "0",
+      "expected_error": null
+    },
+    {
+      "input": "ж",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "0001",
+      "expected_error": null
+    },
+    {
+      "input": "з",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "1100",
+      "expected_error": null
+    },
+    {
+      "input": "и",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "00",
+      "expected_error": null
+    },
+    {
+      "input": "й",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "0111",
+      "expected_error": null
+    },
+    {
+      "input": "к",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "101",
+      "expected_error": null
+    },
+    {
+      "input": "л",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "0100",
+      "expected_error": null
+    },
+    {
+      "input": "м",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "11",
+      "expected_error": null
+    },
+    {
+      "input": "н",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "10",
+      "expected_error": null
+    },
+    {
+      "input": "о",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "111",
+      "expected_error": null
+    },
+    {
+      "input": "п",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "0110",
+      "expected_error": null
+    },
+    {
+      "input": "р",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "010",
+      "expected_error": null
+    },
+    {
+      "input": "с",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "000",
+      "expected_error": null
+    },
+    {
+      "input": "т",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "1",
+      "expected_error": null
+    },
+    {
+      "input": "у",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "001",
+      "expected_error": null
+    },
+    {
+      "input": "ф",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "0010",
+      "expected_error": null
+    },
+    {
+      "input": "х",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "0000",
+      "expected_error": null
+    },
+    {
+      "input": "ц",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "1010",
+      "expected_error": null
+    },
+    {
+      "input": "ч",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "1110",
+      "expected_error": null
+    },
+    {
+      "input": "ш",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "1111",
+      "expected_error": null
+    },
+    {
+      "input": "щ",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "1101",
+      "expected_error": null
+    },
+    {
+      "input": "ъ",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "11011",
+      "expected_error": null
+    },
+    {
+      "input": "ы",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "1011",
+      "expected_error": null
+    },
+    {
+      "input": "ь",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "1001",
+      "expected_error": null
+    },
+    {
+      "input": "э",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "00100",
+      "expected_error": null
+    },
+    {
+      "input": "ю",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "0011",
+      "expected_error": null
+    },
+    {
+      "input": "я",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "0101",
+      "expected_error": null
+    },
+    {
+      "input": "ё",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "ru cyrillic letter (no locale)",
+      "expected_bits": "0",
+      "expected_error": null
+    },
+    {
+      "input": ".",
+      "locale": "ru",
+      "fold_diacritics": false,
+      "note": "Soviet punctuation (locale=ru)",
+      "expected_bits": "000000",
+      "expected_error": null
+    },
+    {
+      "input": ",",
+      "locale": "ru",
+      "fold_diacritics": false,
+      "note": "Soviet punctuation (locale=ru)",
+      "expected_bits": "010101",
+      "expected_error": null
+    },
+    {
+      "input": ".",
+      "locale": "en",
+      "fold_diacritics": false,
+      "note": "International punct (locale=en)",
+      "expected_bits": "010101",
+      "expected_error": null
+    },
+    {
+      "input": ",",
+      "locale": "en",
+      "fold_diacritics": false,
+      "note": "International punct (locale=en)",
+      "expected_bits": "110011",
+      "expected_error": null
+    },
+    {
+      "input": "à",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "French accent (no locale)",
+      "expected_bits": "01101",
+      "expected_error": null
+    },
+    {
+      "input": "À",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "French accent (uppercase)",
+      "expected_bits": "01101",
+      "expected_error": null
+    },
+    {
+      "input": "ç",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "French accent (no locale)",
+      "expected_bits": "10100",
+      "expected_error": null
+    },
+    {
+      "input": "Ç",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "French accent (uppercase)",
+      "expected_bits": "10100",
+      "expected_error": null
+    },
+    {
+      "input": "é",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "French accent (no locale)",
+      "expected_bits": "00100",
+      "expected_error": null
+    },
+    {
+      "input": "É",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "French accent (uppercase)",
+      "expected_bits": "00100",
+      "expected_error": null
+    },
+    {
+      "input": "è",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "French accent (no locale)",
+      "expected_bits": "01001",
+      "expected_error": null
+    },
+    {
+      "input": "È",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "French accent (uppercase)",
+      "expected_bits": "01001",
+      "expected_error": null
+    },
+    {
+      "input": "ä",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "German accent (no locale)",
+      "expected_bits": "0101",
+      "expected_error": null
+    },
+    {
+      "input": "ö",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "German accent (no locale)",
+      "expected_bits": "1110",
+      "expected_error": null
+    },
+    {
+      "input": "ü",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "German accent (no locale)",
+      "expected_bits": "0011",
+      "expected_error": null
+    },
+    {
+      "input": "ß",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "German accent (no locale)",
+      "expected_bits": "0001100",
+      "expected_error": null
+    },
+    {
+      "input": "ą",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Polish accent (no locale)",
+      "expected_bits": "0101",
+      "expected_error": null
+    },
+    {
+      "input": "ć",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Polish accent (no locale)",
+      "expected_bits": "10100",
+      "expected_error": null
+    },
+    {
+      "input": "ę",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Polish accent (no locale)",
+      "expected_bits": "00100",
+      "expected_error": null
+    },
+    {
+      "input": "ł",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Polish accent (no locale)",
+      "expected_bits": "01001",
+      "expected_error": null
+    },
+    {
+      "input": "ń",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Polish accent (no locale)",
+      "expected_bits": "11011",
+      "expected_error": null
+    },
+    {
+      "input": "ó",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Polish accent (no locale)",
+      "expected_bits": "1110",
+      "expected_error": null
+    },
+    {
+      "input": "ś",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Polish accent (no locale)",
+      "expected_bits": "0001000",
+      "expected_error": null
+    },
+    {
+      "input": "ź",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Polish accent (no locale)",
+      "expected_bits": "110010",
+      "expected_error": null
+    },
+    {
+      "input": "ż",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Polish accent (no locale)",
+      "expected_bits": "11001",
+      "expected_error": null
+    },
+    {
+      "input": "ñ",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Spanish accent (no locale)",
+      "expected_bits": "11011",
+      "expected_error": null
+    },
+    {
+      "input": "ü",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "Spanish accent (no locale)",
+      "expected_bits": "0011",
+      "expected_error": null
+    },
+    {
+      "input": "α",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "01",
+      "expected_error": null
+    },
+    {
+      "input": "β",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "1000",
+      "expected_error": null
+    },
+    {
+      "input": "γ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "110",
+      "expected_error": null
+    },
+    {
+      "input": "δ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "100",
+      "expected_error": null
+    },
+    {
+      "input": "ε",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "0",
+      "expected_error": null
+    },
+    {
+      "input": "ζ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "1100",
+      "expected_error": null
+    },
+    {
+      "input": "η",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "0000",
+      "expected_error": null
+    },
+    {
+      "input": "θ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "1010",
+      "expected_error": null
+    },
+    {
+      "input": "ι",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "00",
+      "expected_error": null
+    },
+    {
+      "input": "κ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "101",
+      "expected_error": null
+    },
+    {
+      "input": "λ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "0100",
+      "expected_error": null
+    },
+    {
+      "input": "μ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "11",
+      "expected_error": null
+    },
+    {
+      "input": "ν",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "10",
+      "expected_error": null
+    },
+    {
+      "input": "ξ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "1001",
+      "expected_error": null
+    },
+    {
+      "input": "ο",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "111",
+      "expected_error": null
+    },
+    {
+      "input": "π",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "0110",
+      "expected_error": null
+    },
+    {
+      "input": "ρ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "010",
+      "expected_error": null
+    },
+    {
+      "input": "σ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "000",
+      "expected_error": null
+    },
+    {
+      "input": "τ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "1",
+      "expected_error": null
+    },
+    {
+      "input": "υ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "1011",
+      "expected_error": null
+    },
+    {
+      "input": "φ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "0010",
+      "expected_error": null
+    },
+    {
+      "input": "χ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "1111",
+      "expected_error": null
+    },
+    {
+      "input": "ψ",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "1101",
+      "expected_error": null
+    },
+    {
+      "input": "ω",
+      "locale": "el",
+      "fold_diacritics": false,
+      "note": "Greek (locale=el)",
+      "expected_bits": "011",
+      "expected_error": null
+    },
+    {
+      "input": "イ",
+      "locale": "jp",
+      "fold_diacritics": false,
+      "note": "Japanese Wabun (locale=jp)",
+      "expected_bits": "01",
+      "expected_error": null
+    },
+    {
+      "input": "ロ",
+      "locale": "jp",
+      "fold_diacritics": false,
+      "note": "Japanese Wabun (locale=jp)",
+      "expected_bits": "0101",
+      "expected_error": null
+    },
+    {
+      "input": "ハ",
+      "locale": "jp",
+      "fold_diacritics": false,
+      "note": "Japanese Wabun (locale=jp)",
+      "expected_bits": "1000",
+      "expected_error": null
+    },
+    {
+      "input": "ニ",
+      "locale": "jp",
+      "fold_diacritics": false,
+      "note": "Japanese Wabun (locale=jp)",
+      "expected_bits": "1010",
+      "expected_error": null
+    },
+    {
+      "input": "ホ",
+      "locale": "jp",
+      "fold_diacritics": false,
+      "note": "Japanese Wabun (locale=jp)",
+      "expected_bits": "100",
+      "expected_error": null
+    },
+    {
+      "input": "ヘ",
+      "locale": "jp",
+      "fold_diacritics": false,
+      "note": "Japanese Wabun (locale=jp)",
+      "expected_bits": "0",
+      "expected_error": null
+    },
+    {
+      "input": "ト",
+      "locale": "jp",
+      "fold_diacritics": false,
+      "note": "Japanese Wabun (locale=jp)",
+      "expected_bits": "00100",
+      "expected_error": null
+    },
+    {
+      "input": "チ",
+      "locale": "jp",
+      "fold_diacritics": false,
+      "note": "Japanese Wabun (locale=jp)",
+      "expected_bits": "0010",
+      "expected_error": null
+    },
+    {
+      "input": "リ",
+      "locale": "jp",
+      "fold_diacritics": false,
+      "note": "Japanese Wabun (locale=jp)",
+      "expected_bits": "110",
+      "expected_error": null
+    },
+    {
+      "input": "ヌ",
+      "locale": "jp",
+      "fold_diacritics": false,
+      "note": "Japanese Wabun (locale=jp)",
+      "expected_bits": "0000",
+      "expected_error": null
+    },
+    {
+      "input": "é",
+      "locale": null,
+      "fold_diacritics": true,
+      "note": "fold é → e (fold on)",
+      "expected_bits": "00100",
+      "expected_error": null
+    },
+    {
+      "input": "è",
+      "locale": null,
+      "fold_diacritics": true,
+      "note": "fold è → e (fold on)",
+      "expected_bits": "01001",
+      "expected_error": null
+    },
+    {
+      "input": "š",
+      "locale": null,
+      "fold_diacritics": true,
+      "note": "fold š → s (fold on)",
+      "expected_bits": "000",
+      "expected_error": null
+    },
+    {
+      "input": "č",
+      "locale": null,
+      "fold_diacritics": true,
+      "note": "fold č → c (fold on)",
+      "expected_bits": "1010",
+      "expected_error": null
+    },
+    {
+      "input": "ř",
+      "locale": null,
+      "fold_diacritics": true,
+      "note": "fold ř → r (fold on)",
+      "expected_bits": "010",
+      "expected_error": null
+    },
+    {
+      "input": "ñ",
+      "locale": null,
+      "fold_diacritics": true,
+      "note": "fold ñ → n (fold on)",
+      "expected_bits": "11011",
+      "expected_error": null
+    },
+    {
+      "input": "á",
+      "locale": null,
+      "fold_diacritics": true,
+      "note": "fold á → a (fold on)",
+      "expected_bits": "01",
+      "expected_error": null
+    },
+    {
+      "input": "ÿ",
+      "locale": null,
+      "fold_diacritics": true,
+      "note": "fold ÿ → y (fold on)",
+      "expected_bits": "1011",
+      "expected_error": null
+    },
+    {
+      "input": "ß",
+      "locale": null,
+      "fold_diacritics": true,
+      "note": "ß → ss (multi-char fold) → error",
+      "expected_bits": "0001100",
+      "expected_error": null
+    },
+    {
+      "input": "中",
+      "locale": null,
+      "fold_diacritics": true,
+      "note": "CJK (non-Latin) → error",
+      "expected_bits": null,
+      "expected_error": "ValueError"
+    },
+    {
+      "input": "é",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "unknown é without fold → error",
+      "expected_bits": "00100",
+      "expected_error": null
+    },
+    {
+      "input": "🎉",
+      "locale": null,
+      "fold_diacritics": false,
+      "note": "emoji → error",
+      "expected_bits": null,
+      "expected_error": "ValueError"
+    }
+  ]
+}
