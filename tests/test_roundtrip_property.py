@@ -53,7 +53,11 @@ def _bits_of_length(n: int) -> st.SearchStrategy[str]:
 
 def _assert_roundtrip(bits: str, locale: str) -> None:
     text = morse.bits_to_text(bits, locale=locale)
-    re_bits = ''.join(morse.char_to_bits(c) for c in text)
+    # Pass locale into char_to_bits so locale-specific punctuation (e.g.
+    # Soviet `.` = `......` under ru) round-trips correctly. Without
+    # locale the encoder defaults to international ITU-R for `.`/`,`,
+    # which doesn't match what the ru-decoder produced.
+    re_bits = ''.join(morse.char_to_bits(c, locale=locale) for c in text)
     assert re_bits == bits, (
         f'round-trip mismatch in locale={locale!r}:\n'
         f'  input bits  : {bits}\n'

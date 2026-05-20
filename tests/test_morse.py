@@ -72,10 +72,15 @@ def test_all_26_latin():
 
 
 def test_all_33_cyrillic():
-    # 32 + ё
-    assert len(CYRILLIC) == 33
+    # 32 буквы + ё + Soviet `.` `,` пунктуация = 35 entries.
+    # Буквенная часть (без `.`, `,`) = 33 (включая ё).
+    letters = {ch for ch in CYRILLIC if ch.isalpha()}
+    assert len(letters) == 33
     for ch in CYRILLIC:
-        bits = char_to_bits(ch)
+        # Эксплицитно с locale='ru', потому что без локали `.` и `,`
+        # резолвятся через PUNCTUATION (международные коды), а не
+        # советские из CYRILLIC.
+        bits = char_to_bits(ch, locale='ru')
         assert set(bits) <= {'0', '1'}
         assert len(bits) > 0
 
@@ -215,3 +220,55 @@ def test_fold_diacritics_uppercase():
     """Заглавные диакритики тоже fold'ятся."""
     assert char_to_bits('É', fold_diacritics=True) == char_to_bits('e')
     assert char_to_bits('Š', fold_diacritics=True) == char_to_bits('s')
+
+
+# Locale-aware encoding (Soviet . and , under ru)
+
+def test_char_to_bits_no_locale_uses_international_punctuation():
+    """Back-compat: без locale `.` и `,` дают международные ITU-R коды."""
+    assert char_to_bits('.') == '010101'   # .-.-.-
+    assert char_to_bits(',') == '110011'   # --..--
+
+
+def test_char_to_bits_ru_locale_uses_soviet_punctuation():
+    """С `locale='ru'` `.` и `,` дают советские коды."""
+    assert char_to_bits('.', locale='ru') == '000000'   # 6 dots
+    assert char_to_bits(',', locale='ru') == '010101'   # .-.-.-
+
+
+def test_char_to_bits_en_locale_falls_back_to_international():
+    """C `locale='en'` `.` и `,` — международные (en's LATIN их не имеет,
+    fallback в PUNCTUATION)."""
+    assert char_to_bits('.', locale='en') == '010101'
+    assert char_to_bits(',', locale='en') == '110011'
+
+
+def test_char_to_bits_unknown_locale_falls_back():
+    """Неизвестная локаль → silent fallback на глобальное разрешение."""
+    assert char_to_bits('.', locale='xx-fake') == '010101'   # как без locale
+
+
+def test_char_to_bits_ru_locale_letters_unchanged():
+    """Русские буквы под `ru` локалью работают как раньше."""
+    assert char_to_bits('а', locale='ru') == '01'   # .-
+    assert char_to_bits('я', locale='ru') == '0101' # .-.-
+
+
+def test_char_to_bits_ru_locale_doesnt_affect_letters_outside_layer():
+    """Латинская `a` под `ru` локалью — fallback на forward_table → LATIN."""
+    assert char_to_bits('a', locale='ru') == '01'   # LATIN's a = .-
+
+
+def test_round_trip_soviet_period():
+    """Encode '.' под ru → decode bits под ru → '.'."""
+    bits = char_to_bits('.', locale='ru')
+    assert bits == '000000'
+    decoded = bits_to_text(bits, locale='ru')
+    assert decoded == '.'
+
+
+def test_fold_and_locale_combine():
+    """fold_diacritics работает вместе с locale."""
+    # 'é' под ru локалью → fold to 'e' → ru's CYRILLIC has 'е' (Cyrillic)
+    # not 'e' (Latin). Latin 'e' идёт fallback в forward_table → LATIN.
+    assert char_to_bits('é', locale='ru', fold_diacritics=True) == char_to_bits('e')

@@ -91,6 +91,16 @@ def main():
              'diacritics whose target wordlist is ASCII (most BIP39 are). '
              'Multi-char folds (ß → ss) are left to fail under strict mode.',
     )
+    parser.add_argument(
+        '--input-locale',
+        default=None,
+        metavar='LOCALE',
+        help='Forward mode: locale-specific encoding for `.` and `,` (and any '
+             'future locale-specific punctuation). E.g. `--input-locale ru` '
+             'uses Soviet codes (`.` = `......`, `,` = `.-.-.-`) instead of '
+             'the international ITU-R codes. Locale-aware letters are loaded '
+             'through `--morse-table` and the built-in en/ru tables.',
+    )
 
     args = parser.parse_args()
 
@@ -139,6 +149,7 @@ def main():
         wordlist=wordlist,
         use_ascii=args.ascii,
         fold_diacritics=args.fold_diacritics,
+        input_locale=args.input_locale,
     )
     if result is not None:
         normalized, mnemonic = result
